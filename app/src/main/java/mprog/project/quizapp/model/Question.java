@@ -2,9 +2,9 @@ package mprog.project.quizapp.model;
 
 import java.util.Set;
 
-class Question extends QuizBaseEntity {
+public class Question extends QuizBaseEntity {
 
-    enum QuestionType {
+    public enum QuestionType {
         TEXT,
         PHOTO,
         VIDEO

@@ -1,6 +1,6 @@
 package mprog.project.quizapp.model;
 
-class Answer extends QuizBaseEntity {
+public class Answer extends QuizBaseEntity {
 
     private String answerText;
     private boolean isCorrectAnswer;

@@ -23,6 +23,9 @@ public class QuizMapStorage {
     }
 
     private QuizMapStorage(){
+        for(Quiz quiz : QuizLoader.getQuizzes()){
+            add(quiz);
+        }
     }
 
     // Add quiz to map.
@@ -39,8 +42,8 @@ public class QuizMapStorage {
     }
 
     // Delete quiz from map.
-    public Quiz delete(Quiz quiz){
-        return quizzes.remove(quiz.getId());
+    public Quiz delete(Long id){
+        return quizzes.remove(id);
     }
 
     // Get quiz from map by id.
