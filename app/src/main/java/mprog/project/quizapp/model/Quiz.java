@@ -1,6 +1,8 @@
 package mprog.project.quizapp.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Quiz extends QuizBaseEntity {
@@ -27,8 +29,8 @@ public class Quiz extends QuizBaseEntity {
         this.description = description;
     }
 
-    public Set<Question> getQuestions() {
-        return questions;
+    public List<Question> getQuestions() {
+        return new ArrayList<>(questions);
     }
 
     public void setQuestions(Set<Question> questions) {

@@ -61,6 +61,7 @@ public class QuizLoader {
         question2.setAnswers(answers);
 
         questions.add(question2);
+
         return questions;
     }
 
