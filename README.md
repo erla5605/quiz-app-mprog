@@ -1,4 +1,4 @@
 # quiz-app-mprog
-Quiz App för mprog
+Quiz App for mprog
 
-En quiz app för kursen mprog
+A quiz app for the course mprog
