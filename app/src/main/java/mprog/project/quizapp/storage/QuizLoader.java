@@ -47,7 +47,6 @@ public class QuizLoader {
         Set<Question> questions = new HashSet<>();
 
         Question question1 = new Question();
-        question1.setId(1l);
         question1.setQuestionText("Question1?");
         question1.setType(Question.QuestionType.TEXT);
         question1.setAnswers(answers);
@@ -55,7 +54,6 @@ public class QuizLoader {
         questions.add(question1);
 
         Question question2 = new Question();
-        question2.setId(2l);
         question2.setQuestionText("Question2?");
         question2.setType(Question.QuestionType.TEXT);
         question2.setAnswers(answers);

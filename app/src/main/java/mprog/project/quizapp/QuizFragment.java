@@ -1,5 +1,6 @@
 package mprog.project.quizapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,10 @@ public class QuizFragment extends Fragment {
         quizDescriptionTextView.setText(quiz.getDescription());
 
         questionRecyclerView = v.findViewById(R.id.question_recycler_view);
-        questionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
+        questionRecyclerView.setLayoutManager(linearLayoutManager);
 
         questionAdapter = new QuestionAdapter(quiz.getQuestions());
         questionRecyclerView.setAdapter(questionAdapter);
@@ -50,7 +54,7 @@ public class QuizFragment extends Fragment {
         return v;
     }
 
-    private class QuestionHolder extends RecyclerView.ViewHolder {
+    private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Question question;
         private TextView questionText;
@@ -59,11 +63,18 @@ public class QuizFragment extends Fragment {
             super(inflater.inflate(R.layout.list_question_item, parent, false));
 
             questionText = itemView.findViewById(R.id.item_question_text);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Question question){
             this.question = question;
             questionText.setText(this.question.getQuestionText());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = QuestionActivity.newIntent(getActivity(), question.getId());
+            startActivity(intent);
         }
     }
 

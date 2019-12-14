@@ -4,6 +4,7 @@ import java.util.Set;
 
 public class Question extends QuizBaseEntity {
 
+
     public enum QuestionType {
         TEXT,
         PHOTO,
@@ -14,7 +15,6 @@ public class Question extends QuizBaseEntity {
     private Set<Answer> answers;
     private QuestionType type;
     private String media;
-
 
     /* Getter and setters */
 
@@ -49,4 +49,5 @@ public class Question extends QuizBaseEntity {
     public void setMedia(String media) {
         this.media = media;
     }
+
 }
