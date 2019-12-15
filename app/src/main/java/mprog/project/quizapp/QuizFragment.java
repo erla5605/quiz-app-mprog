@@ -1,11 +1,13 @@
 package mprog.project.quizapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +22,8 @@ import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class QuizFragment extends Fragment {
+
+    private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
 
     private TextView quizDescriptionTextView;
     private RecyclerView questionRecyclerView;
@@ -59,14 +63,14 @@ public class QuizFragment extends Fragment {
         private Question question;
         private TextView questionText;
 
-        public QuestionHolder(LayoutInflater inflater, ViewGroup parent){
+        public QuestionHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_question_item, parent, false));
 
             questionText = itemView.findViewById(R.id.item_question_text);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Question question){
+        public void bind(Question question) {
             this.question = question;
             questionText.setText(this.question.getQuestionText());
         }
@@ -74,7 +78,7 @@ public class QuizFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = QuestionActivity.newIntent(getActivity(), question.getId());
-            startActivity(intent);
+            startActivityForResult(intent, QUESTION_ANSWER_REQUEST_CODE);
         }
     }
 
@@ -106,5 +110,11 @@ public class QuizFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == QUESTION_ANSWER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            boolean answeredCorrectly = data.getBooleanExtra("answer_bool", false);
+            Toast.makeText(getContext(), "Answer was correct? " + answeredCorrectly, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

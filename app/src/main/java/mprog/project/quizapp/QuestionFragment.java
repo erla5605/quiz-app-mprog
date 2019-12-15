@@ -1,5 +1,7 @@
 package mprog.project.quizapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,7 @@ public class QuestionFragment extends Fragment {
     private RadioGroup answersRadioGroup;
     private Button answerQuestionButton;
 
-    public static QuestionFragment newQuestionFragment(Long quizId){
+    public static QuestionFragment newQuestionFragment(Long quizId) {
         QuestionFragment questionFragment = new QuestionFragment();
         Bundle args = new Bundle();
         args.putLong(QUESTION_ID_ARG, quizId);
@@ -60,7 +62,7 @@ public class QuestionFragment extends Fragment {
 
         answersRadioGroup = v.findViewById(R.id.answers_radio_group);
 
-        for(Answer answer : answers) {
+        for (Answer answer : answers) {
             RadioButton rButton = new RadioButton(v.getContext());
             int radioButtonId = v.generateViewId();
             rButton.setId(radioButtonId);
@@ -73,13 +75,14 @@ public class QuestionFragment extends Fragment {
         answerQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = answersRadioGroup.getCheckedRadioButtonId();
-                int index = radioButtonIds.indexOf(id);
-
-                if(answers.get(index).isCorrectAnswer()){
-                    Toast.makeText(getContext(), "CORRECT", Toast.LENGTH_SHORT).show();
+                int id = answersRadioGroup.getCheckedRadioButtonId(); // Returns -1 if no button checked.
+                if (id != -1) {
+                    int index = radioButtonIds.indexOf(id);
+                    boolean answeredCorrectly =  answers.get(index).isCorrectAnswer();
+                    getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra("answer_bool", answeredCorrectly));
+                    getActivity().onBackPressed();
                 } else {
-                    Toast.makeText(getContext(), "INCORRECT", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "NO ANSWER", Toast.LENGTH_SHORT).show();
                 }
             }
         });
