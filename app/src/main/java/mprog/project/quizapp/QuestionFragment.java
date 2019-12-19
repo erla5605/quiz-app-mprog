@@ -25,7 +25,6 @@ import mprog.project.quizapp.storage.QuestionMapStorage;
 
 public class QuestionFragment extends Fragment {
 
-
     public static final String ANSWER_EXTRA = "answer_boolean";
     public static final String QUESTION_EXTRA = "answered_question_id";
     public static final String QUESTION_ID_ARG = "question_id";
@@ -38,7 +37,7 @@ public class QuestionFragment extends Fragment {
     private RadioGroup answersRadioGroup;
     private Button answerQuestionButton;
 
-    public static QuestionFragment newQuestionFragment(Long quizId) {
+    public static QuestionFragment newInstance(Long quizId) {
         QuestionFragment questionFragment = new QuestionFragment();
         Bundle args = new Bundle();
         args.putLong(QUESTION_ID_ARG, quizId);

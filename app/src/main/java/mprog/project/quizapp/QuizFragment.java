@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,12 +28,9 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener {
 
     private static final String TAG = "QuizFragment";
-
     private static final String COMPLETE_QUIZ_TAG = "Complete quiz";
-
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
     private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
-
 
     private TextView quizDescriptionTextView;
     private RecyclerView questionRecyclerView;
@@ -82,18 +78,19 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         return v;
     }
 
-    private int getQuizScore() {
+    private double getQuizScore() {
         int sum = 0;
         for (int i : questionAnswers.values()) {
             sum += i;
         }
-        return sum;
+        return (double)sum / quiz.getQuestions().size();
     }
 
     @Override
     public void onYesButtonClicked(DialogFragment dialog) {
-        double quizScorePercentage = (double) getQuizScore() / quiz.getQuestions().size();
-        Toast.makeText(getContext(), "SCORE" + quizScorePercentage, Toast.LENGTH_SHORT).show();
+        double quizScorePercentage = getQuizScore();
+        Intent intent = CompletedQuizActivity.newIntent(getActivity(), quiz.getId(), quizScorePercentage);
+        startActivity(intent);
     }
 
     @Override
@@ -160,11 +157,11 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == QUESTION_ANSWER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            handledAnsweredQuestion(data);
+            handleAnsweredQuestion(data);
         }
     }
 
-    private void handledAnsweredQuestion(Intent data) {
+    private void handleAnsweredQuestion(Intent data) {
         Bundle extras = data.getExtras();
         boolean answeredCorrectly = extras.getBoolean(QuestionFragment.ANSWER_EXTRA);
         long answeredQuestionId = extras.getLong(QuestionFragment.QUESTION_EXTRA);

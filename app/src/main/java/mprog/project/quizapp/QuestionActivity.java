@@ -34,7 +34,7 @@ public class QuestionActivity extends AppCompatActivity {
                 throw new RuntimeException("Could not get questionId");
             }
 
-            questionFragment = QuestionFragment.newQuestionFragment(questionId);
+            questionFragment = QuestionFragment.newInstance(questionId);
             fragmentManager.beginTransaction().add(R.id.fragment_container, questionFragment).commit();
         }
     }
