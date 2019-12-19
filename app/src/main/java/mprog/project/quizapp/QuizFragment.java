@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
@@ -31,6 +33,8 @@ public class QuizFragment extends Fragment {
     private QuestionAdapter questionAdapter;
 
     private Quiz quiz;
+
+    private Map<Long, Integer> questionAnswers = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,17 +66,21 @@ public class QuizFragment extends Fragment {
 
         private Question question;
         private TextView questionText;
+        private RadioButton questionRadioButton;
 
         public QuestionHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_question_item, parent, false));
 
             questionText = itemView.findViewById(R.id.item_question_text);
+            questionRadioButton = itemView.findViewById(R.id.item_question_radio_button);
+
             itemView.setOnClickListener(this);
         }
 
         public void bind(Question question) {
             this.question = question;
             questionText.setText(this.question.getQuestionText());
+            questionRadioButton.setChecked(questionAnswers.get(question.getId()) != null);
         }
 
         @Override
@@ -113,8 +121,14 @@ public class QuizFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == QUESTION_ANSWER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            boolean answeredCorrectly = data.getBooleanExtra("answer_bool", false);
-            Toast.makeText(getContext(), "Answer was correct? " + answeredCorrectly, Toast.LENGTH_SHORT).show();
+            handledAnsweredQuestion(data);
         }
+    }
+
+    private void handledAnsweredQuestion(Intent data) {
+        boolean answeredCorrectly = data.getBooleanExtra(QuestionFragment.ANSWER_EXTRA, false);
+        Long answeredQuestionId = data.getLongExtra(QuestionFragment.QUESTION_EXTRA, -1);
+        questionAnswers.put(answeredQuestionId, answeredCorrectly ? 1 : 0);
+        questionAdapter.notifyDataSetChanged();
     }
 }

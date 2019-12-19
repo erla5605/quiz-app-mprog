@@ -25,7 +25,10 @@ import mprog.project.quizapp.storage.QuestionMapStorage;
 
 public class QuestionFragment extends Fragment {
 
-    public static final String QUESTION_ID_ARG = "quiz_id";
+
+    public static final String ANSWER_EXTRA = "answer_boolean";
+    public static final String QUESTION_EXTRA = "question_id";
+    public static final String QUESTION_ID_ARG = "question_id";
 
     private Question question;
     private List<Answer> answers;
@@ -79,7 +82,8 @@ public class QuestionFragment extends Fragment {
                 if (id != -1) {
                     int index = radioButtonIds.indexOf(id);
                     boolean answeredCorrectly =  answers.get(index).isCorrectAnswer();
-                    getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra("answer_bool", answeredCorrectly));
+                    getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra(ANSWER_EXTRA, answeredCorrectly));
+                    getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra(QUESTION_EXTRA, question.getId()));
                     getActivity().onBackPressed();
                 } else {
                     Toast.makeText(getContext(), "NO ANSWER", Toast.LENGTH_SHORT).show();
