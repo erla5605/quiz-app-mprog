@@ -14,20 +14,19 @@ public class CompleteQuizDialogFragment extends DialogFragment {
 
     interface CompleteQuizDialogListener{
         void onYesButtonClicked(DialogFragment dialog);
-        void onCancelButtonClicked(DialogFragment dialog);
     }
 
-    CompleteQuizDialogListener listener;
+    private CompleteQuizDialogListener listener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.complete_quiz_dialog);
         builder.setNegativeButton(R.string.cancel_dialog_text, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // No action on cancel.
+                dismiss();
             }
         });
         builder.setPositiveButton(R.string.yes_dialog_text, new DialogInterface.OnClickListener() {
@@ -45,7 +44,7 @@ public class CompleteQuizDialogFragment extends DialogFragment {
         try {
             listener = (CompleteQuizDialogListener) getTargetFragment();
         } catch (ClassCastException e){
-            throw new ClassCastException(context.toString() + " must implement CompleteQuizDialogListener!");
+            throw new ClassCastException(getTargetFragment().toString() + " must implement CompleteQuizDialogListener!");
         }
     }
 }

@@ -47,7 +47,7 @@
         android:id="@+id/share_completed_quiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/share_completed_quiz"/>
+        android:text="@string/share"/>
 
 
 </LinearLayout>

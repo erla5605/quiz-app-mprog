@@ -5,10 +5,15 @@
     <string name="complete_quiz_dialog">Are you sure you want to complete the quiz?</string>
     <string name="yes_dialog_text">Yes</string>
     <string name="cancel_dialog_text">Cancel</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="share_option_dialog">Share with: </string>
     <string name="quiz_completed">You have completed the quiz:</string>
     <string name="completed_quiz_score">Score:</string>
-    <string name="share_completed_quiz">Share</string>
+    <string name="share">Share</string>
+    <string name="share_completed_quiz_text">
+        Hi!\n
+        I just completed the quiz %s!\n
+        My score was %s\n
+        \n
+        Try to beat my score!
+    </string>
 </resources>

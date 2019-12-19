@@ -93,11 +93,6 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         startActivity(intent);
     }
 
-    @Override
-    public void onCancelButtonClicked(DialogFragment dialog) {
-        // No action on cancel
-    }
-
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Question question;

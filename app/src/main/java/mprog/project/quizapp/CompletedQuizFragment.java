@@ -19,12 +19,13 @@ import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.QuizMapStorage;
 
 
-public class CompletedQuizFragment extends Fragment {
+public class CompletedQuizFragment extends Fragment implements ShareCompletedQuizDialogFragment.ShareCompletedQuizDialogListener {
 
     private static final String TAG = "CompletedQuizFragment";
-
     private static final String QUIZ_ID_ARG = "quiz_id";
     private static final String SCORE_ARG = "score";
+    private static final String SHARE_QUIZ_TAG = "share quiz";
+    private static final int SHARE_QUIZ_REQUEST_CODE = 200;
 
     private TextView quizNameTextView;
     private TextView quizDateTextView;
@@ -71,10 +72,22 @@ public class CompletedQuizFragment extends Fragment {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "NOT IMPLEMENTED YET", Toast.LENGTH_SHORT).show();
+                ShareCompletedQuizDialogFragment dialog = new ShareCompletedQuizDialogFragment();
+                dialog.setTargetFragment(CompletedQuizFragment.this, SHARE_QUIZ_REQUEST_CODE);
+                dialog.show(getFragmentManager(), SHARE_QUIZ_TAG);
             }
         });
 
         return v;
+    }
+
+    @Override
+    public void onEmailButtonClicked() {
+        Toast.makeText(getContext(), String.format("EMAIL \n" + getString(R.string.share_completed_quiz_text), quiz.getName(), Double.toString(score)), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSMSButtonClicked() {
+        Toast.makeText(getContext(), String.format("SMS \n" +getString(R.string.share_completed_quiz_text), quiz.getName(), Double.toString(score)), Toast.LENGTH_SHORT).show();
     }
 }
