@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -25,10 +26,13 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class QuizFragment extends Fragment {
 
+    private static final String TAG = "QuizFragment";
+
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
 
     private TextView quizDescriptionTextView;
     private RecyclerView questionRecyclerView;
+    private Button completeQuizButton;
 
     private QuestionAdapter questionAdapter;
 
@@ -47,7 +51,7 @@ public class QuizFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_quiz, container, false);
 
-        quizDescriptionTextView = v.findViewById(R.id.description_text_view);
+        quizDescriptionTextView = v.findViewById(R.id.quiz_description_text_view);
         quizDescriptionTextView.setText(quiz.getDescription());
 
         questionRecyclerView = v.findViewById(R.id.question_recycler_view);
@@ -59,7 +63,24 @@ public class QuizFragment extends Fragment {
         questionAdapter = new QuestionAdapter(quiz.getQuestions());
         questionRecyclerView.setAdapter(questionAdapter);
 
+        completeQuizButton = v.findViewById(R.id.complete_quiz_button);
+        completeQuizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                double quizScorePercentage = (double) getQuizScore() / quiz.getQuestions().size();
+            }
+        });
+
         return v;
+    }
+
+    private int getQuizScore() {
+        int sum = 0;
+        for (int i : questionAnswers.values()) {
+            sum += i;
+        }
+        return sum;
     }
 
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -126,8 +147,9 @@ public class QuizFragment extends Fragment {
     }
 
     private void handledAnsweredQuestion(Intent data) {
-        boolean answeredCorrectly = data.getBooleanExtra(QuestionFragment.ANSWER_EXTRA, false);
-        Long answeredQuestionId = data.getLongExtra(QuestionFragment.QUESTION_EXTRA, -1);
+        Bundle extras = data.getExtras();
+        boolean answeredCorrectly = extras.getBoolean(QuestionFragment.ANSWER_EXTRA);
+        long answeredQuestionId = extras.getLong(QuestionFragment.QUESTION_EXTRA);
         questionAnswers.put(answeredQuestionId, answeredCorrectly ? 1 : 0);
         questionAdapter.notifyDataSetChanged();
     }

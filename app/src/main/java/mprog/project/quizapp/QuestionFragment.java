@@ -27,7 +27,7 @@ public class QuestionFragment extends Fragment {
 
 
     public static final String ANSWER_EXTRA = "answer_boolean";
-    public static final String QUESTION_EXTRA = "question_id";
+    public static final String QUESTION_EXTRA = "answered_question_id";
     public static final String QUESTION_ID_ARG = "question_id";
 
     private Question question;
@@ -80,10 +80,7 @@ public class QuestionFragment extends Fragment {
             public void onClick(View v) {
                 int id = answersRadioGroup.getCheckedRadioButtonId(); // Returns -1 if no button checked.
                 if (id != -1) {
-                    int index = radioButtonIds.indexOf(id);
-                    boolean answeredCorrectly =  answers.get(index).isCorrectAnswer();
-                    getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra(ANSWER_EXTRA, answeredCorrectly));
-                    getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra(QUESTION_EXTRA, question.getId()));
+                    setQuestionResult(id);
                     getActivity().onBackPressed();
                 } else {
                     Toast.makeText(getContext(), "NO ANSWER", Toast.LENGTH_SHORT).show();
@@ -92,5 +89,15 @@ public class QuestionFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void setQuestionResult(int id) {
+        int index = radioButtonIds.indexOf(id);
+        boolean answeredCorrectly =  answers.get(index).isCorrectAnswer();
+        Bundle extras = new Bundle();
+        extras.putBoolean(ANSWER_EXTRA, answeredCorrectly);
+        extras.putLong(QUESTION_EXTRA, question.getId());
+        Intent intent = new Intent().putExtras(extras);
+        getActivity().setResult(Activity.RESULT_OK, intent);
     }
 }
