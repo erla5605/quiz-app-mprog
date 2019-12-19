@@ -1,4 +1,4 @@
-package mprog.project.quizapp.storage;
+package mprog.project.quizapp.storage.startup;
 
 import java.util.ArrayList;
 import java.util.HashSet;

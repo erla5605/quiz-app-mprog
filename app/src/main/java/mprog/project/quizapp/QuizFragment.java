@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,11 +26,15 @@ import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.QuizMapStorage;
 
-public class QuizFragment extends Fragment {
+public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener {
 
     private static final String TAG = "QuizFragment";
 
+    private static final String COMPLETE_QUIZ_TAG = "Complete quiz";
+
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
+    private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
+
 
     private TextView quizDescriptionTextView;
     private RecyclerView questionRecyclerView;
@@ -67,8 +73,9 @@ public class QuizFragment extends Fragment {
         completeQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                double quizScorePercentage = (double) getQuizScore() / quiz.getQuestions().size();
+                CompleteQuizDialogFragment dialog = new CompleteQuizDialogFragment();
+                dialog.setTargetFragment(QuizFragment.this,COMPLETE_QUIZ_REQUEST_CODE);
+                dialog.show(getFragmentManager(), COMPLETE_QUIZ_TAG);
             }
         });
 
@@ -81,6 +88,17 @@ public class QuizFragment extends Fragment {
             sum += i;
         }
         return sum;
+    }
+
+    @Override
+    public void onYesButtonClicked(DialogFragment dialog) {
+        double quizScorePercentage = (double) getQuizScore() / quiz.getQuestions().size();
+        Toast.makeText(getContext(), "SCORE" + quizScorePercentage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelButtonClicked(DialogFragment dialog) {
+        // No action on cancel
     }
 
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

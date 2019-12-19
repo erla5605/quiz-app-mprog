@@ -8,6 +8,7 @@ import java.util.Map;
 
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
+import mprog.project.quizapp.storage.startup.QuizLoader;
 
 public class QuizMapStorage {
 

@@ -2,4 +2,7 @@
     <string name="app_name">Quiz App</string>
     <string name="answer_question">Set answer</string>
     <string name="complete_quiz">Complete Quiz</string>
+    <string name="complete_quiz_dialog">Are you sure you want to complete the quiz?</string>
+    <string name="yes_dialog_text">Yes</string>
+    <string name="cancel_dialog_text">Cancel</string>
 </resources>
