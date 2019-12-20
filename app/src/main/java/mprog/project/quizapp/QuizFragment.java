@@ -83,7 +83,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         for (int i : questionAnswers.values()) {
             sum += i;
         }
-        return (double)sum / quiz.getQuestions().size();
+        return (double)sum / quiz.getQuestions().size() * 100;
     }
 
     @Override

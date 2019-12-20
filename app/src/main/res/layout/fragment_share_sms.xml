@@ -25,12 +25,10 @@
 
     </LinearLayout>
 
-    <EditText
+    <TextView
         android:id="@+id/sms_body_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:gravity="top|start"
-        android:hint="@string/body_hint"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>

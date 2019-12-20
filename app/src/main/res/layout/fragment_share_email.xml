@@ -41,6 +41,13 @@
         android:hint="@string/body_hint"
         android:inputType="textMultiLine"
         android:minLines="10"
-        android:gravity="top|start"/>
+        android:gravity="top|start"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/edit_email_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_button_text"/>
 
 </LinearLayout>

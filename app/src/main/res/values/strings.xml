@@ -12,7 +12,7 @@
     <string name="share_completed_quiz_text">
         Hi!\n
         I just completed the quiz %s!\n
-        My score was %s\n
+        My score was %.2f%%\n
         \n
         Try to beat my score!
     </string>
@@ -20,4 +20,8 @@
     <string name="subject_hint">Subject:</string>
     <string name="send">Send</string>
     <string name="body_hint">Message:</string>
+    <string name="subject_email_text">Check this Quiz out!</string>
+    <string name="edit_button_text">EDIT</string>
+    <string name="denied_permission">Need permission to perform this action</string>
+    <string name="sms_manager_fail">Could not send sms</string>
 </resources>
