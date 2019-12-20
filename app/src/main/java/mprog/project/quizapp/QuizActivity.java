@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 
 public class QuizActivity extends SingleFragmentActivity {
 
+    private static final String TAG = "QuizActivity";
+
     private static final String QUIZ_ID_EXTRA = "quiz id";
 
     public static Intent newIntent(Context context, Long quizId){
