@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-public class CompletedQuizActivity extends AppCompatActivity {
+public class CompletedQuizActivity extends SingleFragmentActivity {
 
     private static final String QUIZ_ID_EXTRA = "quiz_id";
     private static final String SCORE_EXTRA = "score";
@@ -23,21 +21,13 @@ public class CompletedQuizActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+    protected Fragment createFragment() {
+        Bundle extras = getIntent().getExtras();
+        Long quizId = extras.getLong(QUIZ_ID_EXTRA);
+        double score = extras.getDouble(SCORE_EXTRA);
 
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.fragment_container);
-
-        if(fragment == null){
-            Bundle extras = getIntent().getExtras();
-            Long quizId = extras.getLong(QUIZ_ID_EXTRA);
-            double score = extras.getDouble(SCORE_EXTRA);
-
-            fragment = CompletedQuizFragment.newInstance(quizId, score);
-            manager.beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
-
+        return CompletedQuizFragment.newInstance(quizId, score);
     }
+
+
 }
