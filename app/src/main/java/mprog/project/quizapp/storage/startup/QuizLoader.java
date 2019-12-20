@@ -39,6 +39,14 @@ public class QuizLoader {
 
         quizzes.add(quiz2);
 
+        Quiz quiz3 = new Quiz();
+        quiz3.setName("Q3");
+        quiz3.setDescription("This is Q3");
+        quiz3.setId(3l);
+        quiz3.setQuestions(questions);
+
+        quizzes.add(quiz3);
+
         return quizzes;
     }
 

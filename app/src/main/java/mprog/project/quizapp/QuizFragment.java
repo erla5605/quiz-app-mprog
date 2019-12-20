@@ -104,6 +104,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         double quizScorePercentage = getQuizScore();
         Intent intent = CompletedQuizActivity.newIntent(getActivity(), quiz.getId(), quizScorePercentage);
         startActivity(intent);
+        getActivity().finish();
     }
 
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
