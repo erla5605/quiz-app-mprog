@@ -51,7 +51,6 @@ public class ShareCompletedQuizDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
-
         return builder.create();
     }
 

@@ -16,4 +16,8 @@
         \n
         Try to beat my score!
     </string>
+    <string name="recipient_hint">To:</string>
+    <string name="subject_hint">Subject:</string>
+    <string name="send">Send</string>
+    <string name="body_hint">Message:</string>
 </resources>

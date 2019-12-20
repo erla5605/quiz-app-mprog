@@ -38,9 +38,10 @@ public class QuestionFragment extends Fragment {
     private Button answerQuestionButton;
 
     public static QuestionFragment newInstance(Long quizId) {
-        QuestionFragment questionFragment = new QuestionFragment();
         Bundle args = new Bundle();
         args.putLong(QUESTION_ID_ARG, quizId);
+
+        QuestionFragment questionFragment = new QuestionFragment();
         questionFragment.setArguments(args);
         return questionFragment;
     }

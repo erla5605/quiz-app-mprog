@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +37,6 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
     private double score;
 
     public static CompletedQuizFragment newInstance(Long quizId, double score) {
-
         Bundle args = new Bundle();
         args.putLong(QUIZ_ID_ARG, quizId);
         args.putDouble(SCORE_ARG, score);
@@ -83,11 +81,21 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
 
     @Override
     public void onEmailButtonClicked() {
-        Toast.makeText(getContext(), String.format("EMAIL \n" + getString(R.string.share_completed_quiz_text), quiz.getName(), Double.toString(score)), Toast.LENGTH_SHORT).show();
+        ShareEmailFragment fragment = ShareEmailFragment.newInstance(quiz.getName(), score);
+        swapFragment(fragment);
     }
 
     @Override
     public void onSMSButtonClicked() {
-        Toast.makeText(getContext(), String.format("SMS \n" +getString(R.string.share_completed_quiz_text), quiz.getName(), Double.toString(score)), Toast.LENGTH_SHORT).show();
+        ShareSMSFragment fragment = ShareSMSFragment.newInstance(quiz.getName(), score);
+        swapFragment(fragment);
+    }
+
+    private void swapFragment(Fragment fragment) {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
