@@ -28,6 +28,9 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener {
 
     private static final String TAG = "QuizFragment";
+
+    private static final String QUIZ_ID_ARG = "quiz id";
+
     private static final String COMPLETE_QUIZ_TAG = "Complete quiz";
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
     private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
@@ -42,10 +45,20 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
 
     private Map<Long, Integer> questionAnswers = new HashMap<>();
 
+    public static QuizFragment newInstance(Long quizId){
+        Bundle args = new Bundle();
+        args.putLong(QUIZ_ID_ARG, quizId);
+
+        QuizFragment fragment = new QuizFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        quiz = QuizMapStorage.getInstance().getQuizzes().get(0);
+        Long id = getArguments().getLong(QUIZ_ID_ARG);
+        quiz = QuizMapStorage.getInstance().getQuiz(id);
     }
 
     @Nullable

@@ -39,13 +39,18 @@ public class ShareEmailFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        quizName = getArguments().getString(QUIZ_NAME_ARG);
+        score = getArguments().getDouble(SCORE_ARG);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_share_email, container, false);
-
-        quizName = getArguments().getString(QUIZ_NAME_ARG);
-        score = getArguments().getDouble(SCORE_ARG);
 
         recipientEditText = v.findViewById(R.id.recipient_edit_text);
         subjectEditText = v.findViewById(R.id.email_subject_edit_text);

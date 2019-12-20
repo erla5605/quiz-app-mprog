@@ -1,5 +1,6 @@
 package mprog.project.quizapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ public class QuizListFragment extends Fragment {
     }
 
 
-    private class QuizHolder extends RecyclerView.ViewHolder {
+    private class QuizHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView quizNameTextView;
 
@@ -47,11 +48,19 @@ public class QuizListFragment extends Fragment {
             super(inflater.inflate(R.layout.list_quiz_item, parent, false));
 
             quizNameTextView = itemView.findViewById(R.id.item_quiz_name_text_view);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Quiz quiz) {
             this.quiz = quiz;
             quizNameTextView.setText(quiz.getName());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = QuizActivity.newIntent(getActivity(), quiz.getId());
+            startActivity(intent);
         }
     }
 

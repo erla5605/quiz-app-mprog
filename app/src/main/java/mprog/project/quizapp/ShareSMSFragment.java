@@ -49,13 +49,18 @@ public class ShareSMSFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        quizName = getArguments().getString(QUIZ_NAME_ARG);
+        score = getArguments().getDouble(SCORE_ARG);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_share_sms, container, false);
-
-        quizName = getArguments().getString(QUIZ_NAME_ARG);
-        score = getArguments().getDouble(SCORE_ARG);
 
         toEditText = v.findViewById(R.id.sms_to_edit_text);
         bodyEditText = v.findViewById(R.id.sms_body_edit_text);
