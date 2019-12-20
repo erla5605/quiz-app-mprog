@@ -32,8 +32,8 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
     private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
 
-    private TextView quizDescriptionTextView;
     private RecyclerView questionRecyclerView;
+    private TextView quizDescriptionTextView;
     private Button completeQuizButton;
 
     private QuestionAdapter questionAdapter;
