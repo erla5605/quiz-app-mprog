@@ -90,12 +90,11 @@ public class CreateQuestionFragment extends Fragment
 
     @Override
     public void createAnswer(String answerText) {
-
         Answer newAnswer = new Answer();
         newAnswer.setAnswerText(answerText);
         question.addAnswer(newAnswer);
         answerAdapter.setAnswers(question.getAnswers());
-        answerAdapter.notifyDataSetChanged();
+        answerAdapter.notifyItemInserted(question.getAnswers().size() - 1);
     }
 
     private class AnswerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -125,6 +124,8 @@ public class CreateQuestionFragment extends Fragment
             dialog.setTargetFragment(CreateQuestionFragment.this, SET_CORRECT_ANSWER_REQUEST_CODE);
             dialog.show(getFragmentManager(), SET_CORRECT_ANSWER_TAG);
         }
+
+
     }
 
     private class AnswerAdapter extends RecyclerView.Adapter<AnswerHolder> {
@@ -159,4 +160,6 @@ public class CreateQuestionFragment extends Fragment
             this.answers = answers;
         }
     }
+
+
 }
