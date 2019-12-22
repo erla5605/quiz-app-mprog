@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".CompletedQuizActivity"></activity>
+        <activity android:name=".CreateQuizActivity"></activity>
         <activity android:name=".QuizListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
