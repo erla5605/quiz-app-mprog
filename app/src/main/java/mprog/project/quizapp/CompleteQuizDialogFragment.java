@@ -13,10 +13,12 @@ import androidx.fragment.app.DialogFragment;
 public class CompleteQuizDialogFragment extends DialogFragment {
 
     interface CompleteQuizDialogListener{
+
         void onYesButtonClicked(DialogFragment dialog);
     }
 
     private CompleteQuizDialogListener listener;
+
 
     @NonNull
     @Override
@@ -44,7 +46,8 @@ public class CompleteQuizDialogFragment extends DialogFragment {
         try {
             listener = (CompleteQuizDialogListener) getTargetFragment();
         } catch (ClassCastException e){
-            throw new ClassCastException(getTargetFragment().toString() + " must implement CompleteQuizDialogListener!");
+            throw new ClassCastException(getTargetFragment().getClass().getName()
+                    + " must implement CompleteQuizDialogListener!");
         }
     }
 }

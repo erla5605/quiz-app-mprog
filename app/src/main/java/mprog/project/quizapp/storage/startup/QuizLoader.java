@@ -13,7 +13,7 @@ public class QuizLoader {
 
     // Load static quizzes to MapStorage.
     public static List<Quiz> getQuizzes(){
-        Set<Answer> answers = createAnswers();
+        List<Answer> answers = createAnswers();
         Set<Question> questions = createQuestions(answers);
         List<Quiz> quizzes = createQuizzes(questions);
         return quizzes;
@@ -51,13 +51,14 @@ public class QuizLoader {
     }
 
     // Creates questions.
-    private static Set<Question> createQuestions(Set<Answer> answers) {
+    private static Set<Question> createQuestions(List<Answer> answers) {
         Set<Question> questions = new HashSet<>();
 
         Question question1 = new Question();
         question1.setQuestionText("Question1?");
         question1.setType(Question.QuestionType.TEXT);
         question1.setAnswers(answers);
+        question1.setPositionOfCorrectAnswer(1);
 
         questions.add(question1);
 
@@ -65,6 +66,7 @@ public class QuizLoader {
         question2.setQuestionText("Question2?");
         question2.setType(Question.QuestionType.TEXT);
         question2.setAnswers(answers);
+        question2.setPositionOfCorrectAnswer(1);
 
         questions.add(question2);
 
@@ -72,20 +74,16 @@ public class QuizLoader {
     }
 
     // Creates answers.
-    private static Set<Answer> createAnswers() {
-        Set<Answer> answers = new HashSet<>();
+    private static List<Answer> createAnswers() {
+        List<Answer> answers = new ArrayList<>();
 
         Answer answer1 = new Answer();
-        answer1.setId(1l);
         answer1.setAnswerText("Wrong");
-        answer1.setCorrectAnswer(false);
 
         answers.add(answer1);
 
         Answer answer2 = new Answer();
-        answer2.setId(2l);
         answer2.setAnswerText("Right");
-        answer2.setCorrectAnswer(true);
 
         answers.add(answer2);
         return answers;

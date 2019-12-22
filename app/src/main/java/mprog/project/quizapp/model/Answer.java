@@ -3,7 +3,7 @@ package mprog.project.quizapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Answer extends QuizBaseEntity implements Parcelable {
+public class Answer implements Parcelable {
 
     private String answerText;
     private boolean isCorrectAnswer;

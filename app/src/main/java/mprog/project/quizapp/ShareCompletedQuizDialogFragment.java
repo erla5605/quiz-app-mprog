@@ -12,8 +12,6 @@ import androidx.fragment.app.DialogFragment;
 
 public class ShareCompletedQuizDialogFragment extends DialogFragment {
 
-    private static final String SHARE_QUIZ_TAG = "Share quiz";
-
     private static final int EMAIL_OPTION = 0;
     private static final int SMS_OPTION = 1;
 
@@ -41,14 +39,14 @@ public class ShareCompletedQuizDialogFragment extends DialogFragment {
                         listener.onSMSButtonClicked();
                         break;
                     default:
-                        dismiss();
+                        dialog.cancel();
                 }
             }
         });
         builder.setNegativeButton(R.string.cancel_dialog_text, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dismiss();
+                dialog.cancel();
             }
         });
         return builder.create();
@@ -60,7 +58,7 @@ public class ShareCompletedQuizDialogFragment extends DialogFragment {
         try {
             listener = (ShareCompletedQuizDialogListener) getTargetFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException(getTargetFragment().toString() +
+            throw new ClassCastException(getTargetFragment().getClass().getName() +
                     " must implement ShareCompletedQuizDialogListener!");
         }
 

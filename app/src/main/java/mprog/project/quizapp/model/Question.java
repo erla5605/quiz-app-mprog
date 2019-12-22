@@ -5,9 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Question extends QuizBaseEntity implements Parcelable{
 
@@ -19,9 +17,9 @@ public class Question extends QuizBaseEntity implements Parcelable{
     }
 
     private String questionText;
-    private Set<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
+    private int positionOfCorrectAnswer = -1;
     private QuestionType type;
-
     private String media;
 
     public Question() {
@@ -38,11 +36,30 @@ public class Question extends QuizBaseEntity implements Parcelable{
     }
 
     public List<Answer> getAnswers() {
-        return new ArrayList<>(answers);
+        return answers;
     }
 
-    public void setAnswers(Set<Answer> answers) {
+    public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public void addAnswer(Answer answer){
+        answers.add(answer);
+    }
+
+    public int getPositionOfCorrectAnswer() {
+        return positionOfCorrectAnswer;
+    }
+
+    public void setPositionOfCorrectAnswer(int positionOfCorrectAnswer) {
+        if(positionOfCorrectAnswer > answers.size())
+            throw new IllegalArgumentException("Position of Correct Answer out of bounds");
+
+        if(this.positionOfCorrectAnswer != -1){
+            answers.get(this.positionOfCorrectAnswer).setCorrectAnswer(false);
+        }
+        this.positionOfCorrectAnswer = positionOfCorrectAnswer;
+        answers.get(this.positionOfCorrectAnswer).setCorrectAnswer(true);
     }
 
     public QuestionType getType() {
@@ -64,7 +81,7 @@ public class Question extends QuizBaseEntity implements Parcelable{
     protected Question(Parcel in) {
         questionText = in.readString();
         Answer[] answersArray = in.createTypedArray(Answer.CREATOR);
-        answers = new HashSet<>(Arrays.asList(answersArray));
+        answers = new ArrayList<>(Arrays.asList(answersArray));
         type = QuestionType.values()[in.readInt()];
         media = in.readString();
     }

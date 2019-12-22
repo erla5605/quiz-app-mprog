@@ -31,7 +31,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
 
     private static final String QUIZ_ID_ARG = "quiz id";
 
-    private static final String COMPLETE_QUIZ_TAG = "Complete quiz";
+    private static final String COMPLETE_QUIZ_TAG = "complete quiz";
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
     private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
 

@@ -29,4 +29,12 @@
     <string name="description">Description:</string>
     <string name="add_description">Add description</string>
     <string name="enter_name">Enter name:</string>
+    <string name="done">Done</string>
+    <string name="enter_question">Question:</string>
+    <string name="create_question_title">Question:</string>
+    <string name="set_correct_answer_dialog">Set correct answer</string>
+    <string name="correct_answer">Correct answer</string>
+    <string name="create_answer">Create answer</string>
+    <string name="create_answer_dialog_title">Create answer</string>
+    <string name="enter_answer_hint">Enter answer</string>
 </resources>
