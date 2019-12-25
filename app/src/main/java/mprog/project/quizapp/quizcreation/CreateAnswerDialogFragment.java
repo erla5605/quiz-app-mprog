@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcreation;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import mprog.project.quizapp.R;
 
 public class CreateAnswerDialogFragment extends DialogFragment {
 

@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcomplete;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import mprog.project.quizapp.R;
+
 public class CompleteQuizDialogFragment extends DialogFragment {
 
-    interface CompleteQuizDialogListener{
+    public interface CompleteQuizDialogListener{
 
         void onYesButtonClicked(DialogFragment dialog);
     }

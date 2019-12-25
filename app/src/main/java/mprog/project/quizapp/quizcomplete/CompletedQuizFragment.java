@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcomplete;
 
 
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 
+import mprog.project.quizapp.R;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.QuizMapStorage;
 

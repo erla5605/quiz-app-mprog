@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcomplete;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import mprog.project.quizapp.R;
 
 public class ShareEmailFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcreation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,12 +23,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import mprog.project.quizapp.R;
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class CreateQuizFragment extends Fragment implements CreateQuestionFragment.CreateQuestionListener {
-
 
     public static final String QUIZ_ID_RESULT_EXTRA = "result quiz id";
 

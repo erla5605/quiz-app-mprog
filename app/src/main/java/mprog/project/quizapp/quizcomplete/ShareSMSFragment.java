@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcomplete;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import mprog.project.quizapp.R;
 
 public class ShareSMSFragment extends Fragment {
 

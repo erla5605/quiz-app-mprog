@@ -23,6 +23,8 @@ import java.util.Map;
 
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
+import mprog.project.quizapp.quizcomplete.CompleteQuizDialogFragment;
+import mprog.project.quizapp.quizcomplete.CompletedQuizActivity;
 import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener {

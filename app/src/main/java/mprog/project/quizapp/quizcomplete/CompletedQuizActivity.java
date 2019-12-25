@@ -1,10 +1,12 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcomplete;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+
+import mprog.project.quizapp.SingleFragmentActivity;
 
 public class CompletedQuizActivity extends SingleFragmentActivity {
 

@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcreation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import mprog.project.quizapp.R;
 import mprog.project.quizapp.model.Answer;
 import mprog.project.quizapp.model.Question;
 

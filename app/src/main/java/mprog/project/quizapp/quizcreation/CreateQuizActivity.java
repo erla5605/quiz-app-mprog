@@ -1,9 +1,11 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quizcreation;
 
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
+
+import mprog.project.quizapp.SingleFragmentActivity;
 
 public class CreateQuizActivity extends SingleFragmentActivity {
 
