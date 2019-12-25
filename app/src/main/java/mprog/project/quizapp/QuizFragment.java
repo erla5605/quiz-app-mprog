@@ -29,8 +29,6 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener {
 
-    private static final String TAG = "QuizFragment";
-
     private static final String QUIZ_ID_ARG = "quiz id";
 
     private static final String COMPLETE_QUIZ_TAG = "complete quiz";
