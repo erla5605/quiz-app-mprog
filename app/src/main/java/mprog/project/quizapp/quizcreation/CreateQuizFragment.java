@@ -2,6 +2,7 @@ package mprog.project.quizapp.quizcreation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,15 +69,15 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCreateQuestion();
+                CreateQuestionFragment fragment = new CreateQuestionFragment(CreateQuizFragment.this);
+                openCreateQuestion(fragment);
             }
         });
 
         return v;
     }
 
-    private void openCreateQuestion() {
-        CreateQuestionFragment fragment = new CreateQuestionFragment(CreateQuizFragment.this);
+    private void openCreateQuestion(CreateQuestionFragment fragment) {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -128,21 +130,33 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
         private Question question;
         private TextView questionText;
+        private ImageView questionTypeImageView;
 
         public QuestionHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_new_question_item, parent, false));
 
             questionText = itemView.findViewById(R.id.new_question_text_view);
+            questionTypeImageView = itemView.findViewById(R.id.question_type_image_view);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Question question) {
             this.question = question;
             questionText.setText(question.getQuestionText());
+
+            questionTypeImageView.setImageDrawable(getDrawable(question));
+        }
+
+        private Drawable getDrawable(Question question) {
+            return question.getType() == Question.QuestionType.VIDEO ?
+                    getResources().getDrawable(R.drawable.ic_action_video) : getResources().getDrawable(R.drawable.ic_action_text);
         }
 
         @Override
         public void onClick(View v) {
-            openCreateQuestion();
+            CreateQuestionFragment fragment = new CreateQuestionFragment(question,CreateQuizFragment.this);
+            openCreateQuestion(fragment);
         }
     }
 

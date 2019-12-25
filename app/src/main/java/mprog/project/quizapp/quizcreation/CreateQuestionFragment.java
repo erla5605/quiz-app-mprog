@@ -1,6 +1,8 @@
 package mprog.project.quizapp.quizcreation;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,12 +59,20 @@ public class CreateQuestionFragment extends Fragment
 
     private FloatingActionButton addAnswerButton;
 
-    private Question question = new Question();
+    private Question question;
 
     private CreateQuestionListener listener;
 
-    public CreateQuestionFragment(CreateQuestionListener listener) {
+    private boolean newQuestion;
+
+    public CreateQuestionFragment(Question question, CreateQuestionListener listener) {
+        this.question = question;
         this.listener = listener;
+    }
+
+    public CreateQuestionFragment(CreateQuestionListener listener) {
+        this(new Question(), listener);
+        newQuestion = true;
     }
 
     @Override
@@ -78,6 +88,22 @@ public class CreateQuestionFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_create_question, container, false);
 
         questionEditText = v.findViewById(R.id.create_question_edit_text);
+        questionEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                question.setQuestionText(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         addVideoButton = v.findViewById(R.id.add_video_button);
         addVideoButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +133,9 @@ public class CreateQuestionFragment extends Fragment
             }
         });
 
+        questionEditText.setText(question.getQuestionText());
+        videoUrlTextView.setText(question.getVideo());
+
         return v;
     }
 
@@ -122,11 +151,13 @@ public class CreateQuestionFragment extends Fragment
         switch (item.getItemId()) {
             case R.id.done_quiz_item:
                 if (isQuestionComplete()) {
-                    question.setQuestionText(questionEditText.getText().toString());
-                    if (question.getType() == null) {
-                        question.setType(Question.QuestionType.TEXT);
+                    if(newQuestion){
+                        question.setQuestionText(questionEditText.getText().toString());
+                        if (question.getType() == null) {
+                            question.setType(Question.QuestionType.TEXT);
+                        }
+                        listener.questionCreated(question);
                     }
-                    listener.questionCreated(question);
                     getActivity().onBackPressed();
 
                 } else {
@@ -168,22 +199,41 @@ public class CreateQuestionFragment extends Fragment
     private class AnswerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Answer answer;
-        private TextView answerTextView;
-        private RadioButton correctAnswerRadioButton;
+        private EditText answerEditText;
+        private ImageView correctAnswerImageView;
 
         public AnswerHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_answer_item, parent, false));
 
-            answerTextView = itemView.findViewById(R.id.item_answer_text_view);
-            correctAnswerRadioButton = itemView.findViewById(R.id.item_correct_answer_radio_button);
+            answerEditText = itemView.findViewById(R.id.item_answer_edit_text);
+            answerEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    answer.setAnswerText(s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+            correctAnswerImageView = itemView.findViewById(R.id.item_correct_answer_image_view);
 
             itemView.setOnClickListener(this);
         }
 
         public void bind(Answer answer) {
             this.answer = answer;
-            answerTextView.setText(answer.getAnswerText());
-            correctAnswerRadioButton.setChecked(answer.isCorrectAnswer());
+            answerEditText.setText(answer.getAnswerText());
+            correctAnswerImageView.setImageDrawable(
+                    getResources()
+                            .getDrawable(
+                                    answer.isCorrectAnswer() ?
+                                            R.drawable.ic_action_checked :
+                                            R.drawable.ic_action_unchecked));
         }
 
         @Override
