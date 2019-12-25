@@ -90,6 +90,7 @@ public class QuestionFragment extends Fragment {
             rButton.setId(radioButtonId);
             radioButtonIds.add(radioButtonId);
             rButton.setText(answer.getAnswerText());
+            rButton.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             answersRadioGroup.addView(rButton);
         }
 
