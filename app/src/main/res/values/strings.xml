@@ -40,4 +40,8 @@
     <string name="incomplete_question_text">Question needs text and correct answer to be created</string>
     <string name="failed_quiz_creation">Failed to create quiz</string>
     <string name="incomplete_quiz_text">Quiz needs name, description and questions to be created</string>
+    <string name="welcome">WELCOME</string>
+    <string name="enter_name_hint">Name:</string>
+    <string name="start">START</string>
+    <string name="no_name_text">Please enter a name</string>
 </resources>
