@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mprog.project.quizapp.R;
 import mprog.project.quizapp.model.Answer;
@@ -28,9 +31,11 @@ import mprog.project.quizapp.model.Question;
 
 public class CreateQuestionFragment extends Fragment
         implements SetCorrectAnswerDialogFragment.setCorrectAnswerDialogListener,
-        CreateAnswerDialogFragment.CreateAnswerDialogFragmentListener {
+        CreateAnswerDialogFragment.CreateAnswerDialogFragmentListener,
+        AddVideoDialogFragment.AddVideoDialogFragmentListener {
 
-    interface CreateQuestionListener{
+
+    interface CreateQuestionListener {
         void questionCreated(Question question);
     }
 
@@ -38,10 +43,16 @@ public class CreateQuestionFragment extends Fragment
 
     private static final int SET_CORRECT_ANSWER_REQUEST_CODE = 200;
     private static final int CREATE_ANSWER_REQUEST_CODE = 201;
+    private static final int ADD_VIDEO_REQUEST_CODE = 202;
     private static final String SET_CORRECT_ANSWER_TAG = "set correct answer";
     private static final String CREATE_ANSWER_TAG = "create answer";
+    private static final String ADD_VIDEO_TAG = "add video";
 
     private EditText questionEditText;
+
+    private Button addVideoButton;
+
+    private TextView videoUrlTextView;
 
     private RecyclerView answerRecyclerView;
     private AnswerAdapter answerAdapter;
@@ -69,6 +80,18 @@ public class CreateQuestionFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_create_question, container, false);
 
         questionEditText = v.findViewById(R.id.create_question_edit_text);
+
+        addVideoButton = v.findViewById(R.id.add_video_button);
+        addVideoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddVideoDialogFragment dialogFragment = new AddVideoDialogFragment();
+                dialogFragment.setTargetFragment(CreateQuestionFragment.this, ADD_VIDEO_REQUEST_CODE);
+                dialogFragment.show(getFragmentManager(), ADD_VIDEO_TAG);
+
+            }
+        });
+        videoUrlTextView = v.findViewById(R.id.video_url_text_view);
 
         answerRecyclerView = v.findViewById(R.id.answer_recycler_view);
         answerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -98,10 +121,13 @@ public class CreateQuestionFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.done_quiz_item:
-                if(isQuestionComplete()){
+                if (isQuestionComplete()) {
                     question.setQuestionText(questionEditText.getText().toString());
+                    if(question.getType() == null){
+                        question.setType(Question.QuestionType.TEXT);
+                    }
                     listener.questionCreated(question);
                     getActivity().onBackPressed();
 
@@ -111,8 +137,6 @@ public class CreateQuestionFragment extends Fragment
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
 
 
     }
@@ -125,6 +149,19 @@ public class CreateQuestionFragment extends Fragment
     public void setCorrectAnswer(int answerPosition) {
         question.setPositionOfCorrectAnswer(answerPosition);
         answerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addVideo(String videoUrl) {
+        Pattern regex = Pattern.compile("(?<=v=)(.*?)(?=\\&)");
+        Matcher matcher = regex.matcher(videoUrl);
+        if (matcher.find()){
+            question.setMedia(matcher.group());
+            question.setType(Question.QuestionType.VIDEO);
+            videoUrlTextView.setText(videoUrl);
+        } else {
+            Toast.makeText(getActivity(), "Could not parse url", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

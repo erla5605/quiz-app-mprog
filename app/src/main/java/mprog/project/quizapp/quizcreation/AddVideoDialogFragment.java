@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,61 +16,59 @@ import androidx.fragment.app.DialogFragment;
 
 import mprog.project.quizapp.R;
 
-public class CreateAnswerDialogFragment extends DialogFragment {
+public class AddVideoDialogFragment extends DialogFragment {
 
-    interface CreateAnswerDialogFragmentListener{
-        void createAnswer(String answerText);
+    interface AddVideoDialogFragmentListener {
+        void addVideo(String videoUrl);
     }
 
-    private EditText answerEditText;
+    private EditText videoUrlEditText;
 
-    private CreateAnswerDialogFragmentListener listener;
+    private AddVideoDialogFragmentListener listener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        answerEditText = new EditText(getActivity());
-        answerEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-        answerEditText.setHint(R.string.enter_answer_hint);
+        videoUrlEditText = new EditText(getActivity());
+        videoUrlEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        videoUrlEditText.setHint(R.string.add_video_hint);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.create_answer_dialog_title)
-                .setView(answerEditText)
-                .setNegativeButton(R.string.cancel_dialog_text, new DialogInterface.OnClickListener() {
+                .setTitle(R.string.add_video)
+                .setView(videoUrlEditText)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton(R.string.create_answer, new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String answerText = answerEditText.getText().toString();
-                        if(answerText.isEmpty()){
-                            Toast.makeText(getActivity(), "Answer text required to create answer", Toast.LENGTH_SHORT).show();
+                        String videoUrl = videoUrlEditText.getText().toString();
+                        if(videoUrl.isEmpty() || !URLUtil.isValidUrl(videoUrl) || !videoUrl.contains("youtube")){
+                            Toast.makeText(getActivity(), "No valid url", Toast.LENGTH_SHORT).show();
                         } else {
-                            listener.createAnswer(answerText);
+                            listener.addVideo(videoUrl);
                         }
                     }
                 })
                 .create();
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try{
-            listener = (CreateAnswerDialogFragmentListener) getTargetFragment();
+            listener = (AddVideoDialogFragmentListener) getTargetFragment();
         } catch (ClassCastException e){
             throw new ClassCastException(getTargetFragment().getClass().getName()
-                    + " must implement CreateAnswerDialogFragmentListener!");
+                    + " must implement AddVideoDialogFragmentListener!");
         }
-
     }
 }

@@ -12,7 +12,6 @@ public class Question extends QuizBaseEntity implements Parcelable{
 
     public enum QuestionType {
         TEXT,
-        PHOTO,
         VIDEO
     }
 

@@ -44,4 +44,7 @@
     <string name="enter_name_hint">Name:</string>
     <string name="start">START</string>
     <string name="no_name_text">Please enter a name</string>
+    <string name="video">video</string>
+    <string name="add_video_hint">Enter youtube URL</string>
+    <string name="add_video">Add video</string>
 </resources>
