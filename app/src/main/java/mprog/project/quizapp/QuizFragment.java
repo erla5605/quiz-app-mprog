@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
@@ -42,11 +43,11 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
 
     private Quiz quiz;
 
-    private Map<Long, Integer> questionAnswers = new HashMap<>();
+    private Map<UUID, Integer> questionAnswers = new HashMap<java.util.UUID, Integer>();
 
-    public static QuizFragment newInstance(Long quizId){
+    public static QuizFragment newInstance(UUID quizId){
         Bundle args = new Bundle();
-        args.putLong(QUIZ_ID_ARG, quizId);
+        args.putSerializable(QUIZ_ID_ARG, quizId);
 
         QuizFragment fragment = new QuizFragment();
         fragment.setArguments(args);
@@ -56,7 +57,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Long id = getArguments().getLong(QUIZ_ID_ARG);
+        UUID id = (UUID) getArguments().getSerializable(QUIZ_ID_ARG);
         quiz = QuizMapStorage.getInstance().getQuiz(id);
     }
 

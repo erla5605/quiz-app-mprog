@@ -23,7 +23,6 @@ public class QuizLoader {
         Quiz quiz1 = new Quiz();
         quiz1.setName("Q1");
         quiz1.setDescription("This is Q1");
-        quiz1.setId(1L);
         quiz1.setQuestions(questions);
 
         quizzes.add(quiz1);
@@ -31,7 +30,6 @@ public class QuizLoader {
         Quiz quiz2 = new Quiz();
         quiz2.setName("Q2");
         quiz2.setDescription("This is Q2");
-        quiz2.setId(2L);
         quiz2.setQuestions(questions);
 
         quizzes.add(quiz2);
@@ -39,7 +37,6 @@ public class QuizLoader {
         Quiz quiz3 = new Quiz();
         quiz3.setName("Q3");
         quiz3.setDescription("This is Q3");
-        quiz3.setId(3L);
         quiz3.setQuestions(questions);
 
         quizzes.add(quiz3);

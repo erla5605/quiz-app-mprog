@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 import mprog.project.quizapp.R;
 import mprog.project.quizapp.model.Quiz;
@@ -37,9 +38,9 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
 
     private double score;
 
-    public static CompletedQuizFragment newInstance(Long quizId, double score) {
+    public static CompletedQuizFragment newInstance(UUID quizId, double score) {
         Bundle args = new Bundle();
-        args.putLong(QUIZ_ID_ARG, quizId);
+        args.putSerializable(QUIZ_ID_ARG, quizId);
         args.putDouble(SCORE_ARG, score);
 
         CompletedQuizFragment fragment = new CompletedQuizFragment();
@@ -52,7 +53,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         super.onCreate(savedInstanceState);
 
         score = getArguments().getDouble(SCORE_ARG);
-        quiz = QuizMapStorage.getInstance().getQuiz(getArguments().getLong(QUIZ_ID_ARG));
+        quiz = QuizMapStorage.getInstance().getQuiz((UUID) getArguments().getSerializable(QUIZ_ID_ARG));
     }
 
     @Nullable

@@ -60,6 +60,7 @@ public class QuestionFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         question = getArguments().getParcelable(QUESTION_ARG);
+
         answers = question.getAnswers();
     }
 

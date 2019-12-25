@@ -1,10 +1,10 @@
 package mprog.project.quizapp.storage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.startup.QuizLoader;
@@ -13,7 +13,7 @@ public class QuizMapStorage {
 
     private static QuizMapStorage instance;
 
-    private Map<Long, Quiz> quizzes = new LinkedHashMap<>();
+    private Map<UUID, Quiz> quizzes = new LinkedHashMap<UUID, Quiz>();
 
     // Get instance of QuizMapStorage. If instance null creates a new.
     public static QuizMapStorage getInstance() {
@@ -34,23 +34,18 @@ public class QuizMapStorage {
         if(quiz == null)
             throw new RuntimeException("Quiz can not be null");
 
-        if(quiz.getId() == null){
-            Long id = quizzes.keySet().isEmpty() ? 1L : Collections.max(quizzes.keySet()) + 1L;
-            quiz.setId(id);
-        }
-
         quizzes.put(quiz.getId(), quiz);
     }
 
     // Delete quiz from map.
-    public Quiz delete(Long id){
+    public Quiz delete(UUID id){
         Quiz deletedQuiz = quizzes.remove(id);
 
         return deletedQuiz;
     }
 
     // Get quiz from map by id.
-    public Quiz getQuiz(Long id){
+    public Quiz getQuiz(UUID id){
         return quizzes.get(id);
     }
 

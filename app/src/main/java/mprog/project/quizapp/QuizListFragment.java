@@ -28,6 +28,7 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 public class QuizListFragment extends Fragment {
 
     private static final int CREATE_QUIZ_REQUEST_CODE = 200;
+    private static final String TAG = "QuizAPP";
 
     private RecyclerView quizListRecyclerView;
     private QuizAdapter quizAdapter;

@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Question extends QuizBaseEntity implements Parcelable{
@@ -78,9 +77,9 @@ public class Question extends QuizBaseEntity implements Parcelable{
     }
 
     protected Question(Parcel in) {
+        super(in);
         questionText = in.readString();
-        Answer[] answersArray = in.createTypedArray(Answer.CREATOR);
-        answers = new ArrayList<>(Arrays.asList(answersArray));
+        answers = in.createTypedArrayList(Answer.CREATOR);
         type = QuestionType.values()[in.readInt()];
         video = in.readString();
     }
@@ -104,8 +103,9 @@ public class Question extends QuizBaseEntity implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeString(questionText);
-        dest.writeTypedArray(answers.toArray(new Answer[answers.size()]), flags);
+        dest.writeTypedList(answers);
         dest.writeInt(type.ordinal());
         dest.writeString(video);
     }
@@ -113,6 +113,7 @@ public class Question extends QuizBaseEntity implements Parcelable{
     @Override
     public String toString() {
         return "Question{" +
+                "id=" + getId() +
                 "questionText='" + questionText + '\'' +
                 ", answers=" + answers +
                 ", type=" + type +
