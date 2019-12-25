@@ -19,7 +19,7 @@ public class Question extends QuizBaseEntity implements Parcelable{
     private List<Answer> answers = new ArrayList<>();
     private int positionOfCorrectAnswer = -1;
     private QuestionType type;
-    private String media;
+    private String video;
 
     public Question() {
     }
@@ -46,10 +46,6 @@ public class Question extends QuizBaseEntity implements Parcelable{
         answers.add(answer);
     }
 
-    public int getPositionOfCorrectAnswer() {
-        return positionOfCorrectAnswer;
-    }
-
     public void setPositionOfCorrectAnswer(int positionOfCorrectAnswer) {
         if(positionOfCorrectAnswer > answers.size())
             throw new IllegalArgumentException("Position of Correct Answer out of bounds");
@@ -73,12 +69,12 @@ public class Question extends QuizBaseEntity implements Parcelable{
         this.type = type;
     }
 
-    public String getMedia() {
-        return media;
+    public String getVideo() {
+        return video;
     }
 
-    public void setMedia(String media) {
-        this.media = media;
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     protected Question(Parcel in) {
@@ -86,7 +82,7 @@ public class Question extends QuizBaseEntity implements Parcelable{
         Answer[] answersArray = in.createTypedArray(Answer.CREATOR);
         answers = new ArrayList<>(Arrays.asList(answersArray));
         type = QuestionType.values()[in.readInt()];
-        media = in.readString();
+        video = in.readString();
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -111,7 +107,7 @@ public class Question extends QuizBaseEntity implements Parcelable{
         dest.writeString(questionText);
         dest.writeTypedArray(answers.toArray(new Answer[answers.size()]), flags);
         dest.writeInt(type.ordinal());
-        dest.writeString(media);
+        dest.writeString(video);
     }
 
     @Override
@@ -120,7 +116,7 @@ public class Question extends QuizBaseEntity implements Parcelable{
                 "questionText='" + questionText + '\'' +
                 ", answers=" + answers +
                 ", type=" + type +
-                ", media='" + media + '\'' +
+                ", video='" + video + '\'' +
                 '}';
     }
 }

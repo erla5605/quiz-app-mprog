@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import mprog.project.quizapp.R;
 import mprog.project.quizapp.model.Answer;
@@ -125,7 +123,7 @@ public class CreateQuestionFragment extends Fragment
             case R.id.done_quiz_item:
                 if (isQuestionComplete()) {
                     question.setQuestionText(questionEditText.getText().toString());
-                    if(question.getType() == null){
+                    if (question.getType() == null) {
                         question.setType(Question.QuestionType.TEXT);
                     }
                     listener.questionCreated(question);
@@ -153,15 +151,9 @@ public class CreateQuestionFragment extends Fragment
 
     @Override
     public void addVideo(String videoUrl) {
-        Pattern regex = Pattern.compile("(?<=v=)(.*?)(?=\\&)");
-        Matcher matcher = regex.matcher(videoUrl);
-        if (matcher.find()){
-            question.setMedia(matcher.group());
-            question.setType(Question.QuestionType.VIDEO);
-            videoUrlTextView.setText(videoUrl);
-        } else {
-            Toast.makeText(getActivity(), "Could not parse url", Toast.LENGTH_SHORT).show();
-        }
+        question.setVideo(videoUrl);
+        question.setType(Question.QuestionType.VIDEO);
+        videoUrlTextView.setText(videoUrl);
     }
 
     @Override

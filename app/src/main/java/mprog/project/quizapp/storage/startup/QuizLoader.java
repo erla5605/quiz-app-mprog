@@ -62,7 +62,8 @@ public class QuizLoader {
 
         Question question2 = new Question();
         question2.setQuestionText("Question2?");
-        question2.setType(Question.QuestionType.TEXT);
+        question2.setType(Question.QuestionType.VIDEO);
+        question2.setVideo("https://www.youtube.com/watch?v=l2UDgpLz20M");
         question2.setAnswers(answers);
         question2.setPositionOfCorrectAnswer(1);
 

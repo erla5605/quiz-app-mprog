@@ -2,11 +2,13 @@ package mprog.project.quizapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -34,6 +36,8 @@ public class QuestionFragment extends Fragment {
     private List<Integer> radioButtonIds = new ArrayList<>();
 
     private TextView questionTextView;
+    private ImageButton playVideoButton;
+
     private RadioGroup answersRadioGroup;
     private Button answerQuestionButton;
 
@@ -62,6 +66,21 @@ public class QuestionFragment extends Fragment {
 
         questionTextView = v.findViewById(R.id.question_text_view);
         questionTextView.setText(question.getQuestionText());
+
+        playVideoButton = v.findViewById(R.id.play_video_button);
+
+        if (question.getType() != Question.QuestionType.VIDEO) {
+            playVideoButton.setVisibility(View.INVISIBLE);
+        } else {
+            playVideoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse(question.getVideo());
+                    uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
+            });
+        }
 
         answersRadioGroup = v.findViewById(R.id.answers_radio_group);
 
@@ -93,7 +112,7 @@ public class QuestionFragment extends Fragment {
 
     private void setQuestionResult(int id) {
         int index = radioButtonIds.indexOf(id);
-        boolean answeredCorrectly =  answers.get(index).isCorrectAnswer();
+        boolean answeredCorrectly = answers.get(index).isCorrectAnswer();
         Bundle extras = new Bundle();
         extras.putBoolean(ANSWER_EXTRA, answeredCorrectly);
         extras.putLong(QUESTION_EXTRA, question.getId());
