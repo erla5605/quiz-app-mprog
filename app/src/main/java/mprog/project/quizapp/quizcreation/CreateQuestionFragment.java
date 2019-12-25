@@ -88,22 +88,6 @@ public class CreateQuestionFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_create_question, container, false);
 
         questionEditText = v.findViewById(R.id.create_question_edit_text);
-        questionEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                question.setQuestionText(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         addVideoButton = v.findViewById(R.id.add_video_button);
         addVideoButton.setOnClickListener(new View.OnClickListener() {
@@ -151,15 +135,14 @@ public class CreateQuestionFragment extends Fragment
         switch (item.getItemId()) {
             case R.id.done_quiz_item:
                 if (isQuestionComplete()) {
+                    question.setQuestionText(questionEditText.getText().toString());
+                    if (question.getType() == null) {
+                        question.setType(Question.QuestionType.TEXT);
+                    }
                     if(newQuestion){
-                        question.setQuestionText(questionEditText.getText().toString());
-                        if (question.getType() == null) {
-                            question.setType(Question.QuestionType.TEXT);
-                        }
                         listener.questionCreated(question);
                     }
                     getActivity().onBackPressed();
-
                 } else {
                     Toast.makeText(getActivity(), R.string.incomplete_question_text, Toast.LENGTH_SHORT).show();
                 }
