@@ -1,5 +1,7 @@
 package mprog.project.quizapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,12 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import mprog.project.quizapp.model.Question;
+import mprog.project.quizapp.model.Quiz;
+import mprog.project.quizapp.storage.QuizMapStorage;
 
-public class CreateQuizFragment extends Fragment {
+public class CreateQuizFragment extends Fragment implements CreateQuestionFragment.CreateQuestionListener {
+
+
+    public static final String QUIZ_ID_RESULT_EXTRA = "result quiz id";
 
     private EditText nameEditText;
     private EditText descriptionEditText;
@@ -33,6 +39,8 @@ public class CreateQuizFragment extends Fragment {
     private QuestionAdapter questionAdapter;
 
     private FloatingActionButton addQuestionButton;
+
+    private Quiz quiz = new Quiz();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,14 +60,14 @@ public class CreateQuizFragment extends Fragment {
         questionRecyclerView = v.findViewById(R.id.new_question_recycler_view);
         questionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        questionAdapter = new QuestionAdapter(new ArrayList<Question>());
+        questionAdapter = new QuestionAdapter(quiz.getQuestions());
         questionRecyclerView.setAdapter(questionAdapter);
 
         addQuestionButton = v.findViewById(R.id.add_question_floating_button);
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateQuestionFragment fragment = new CreateQuestionFragment();
+                CreateQuestionFragment fragment = new CreateQuestionFragment(CreateQuizFragment.this);
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, fragment)
@@ -82,14 +90,38 @@ public class CreateQuizFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_quiz_item:
-                Toast.makeText(getActivity(), "DONE", Toast.LENGTH_SHORT).show();
+                if(isQuizComplete()){
+                    createQuiz();
+                    Intent intent = new Intent();
+                    intent.putExtra(QUIZ_ID_RESULT_EXTRA, true);
+                    getActivity().setResult(Activity.RESULT_OK, intent);
+                    getActivity().finish();
+                } else {
+                    Toast.makeText(getActivity(), R.string.incomplete_quiz_text, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private void createQuiz() {
+        quiz.setName(nameEditText.getText().toString());
+        quiz.setDescription(descriptionEditText.getText().toString());
+        QuizMapStorage.getInstance().add(quiz);
+    }
+
+    private boolean isQuizComplete() {
+        return !nameEditText.getText().toString().isEmpty() && !descriptionEditText.getText().toString().isEmpty() && !quiz.getQuestions().isEmpty();
+    }
+
+    @Override
+    public void questionCreated(Question question) {
+        quiz.addQuestion(question);
+        questionAdapter.notifyDataSetChanged();
+    }
+
+    private class QuestionHolder extends RecyclerView.ViewHolder {
 
         private Question question;
         private TextView questionText;
@@ -97,9 +129,7 @@ public class CreateQuizFragment extends Fragment {
         public QuestionHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_new_question_item, parent, false));
 
-            questionText = itemView.findViewById(R.id.item_question_text);
-
-            itemView.setOnClickListener(this);
+            questionText = itemView.findViewById(R.id.new_question_text_view);
         }
 
         public void bind(Question question) {
@@ -107,9 +137,6 @@ public class CreateQuizFragment extends Fragment {
             questionText.setText(question.getQuestionText());
         }
 
-        @Override
-        public void onClick(View v) {
-        }
     }
 
     private class QuestionAdapter extends RecyclerView.Adapter<QuestionHolder> {
@@ -137,10 +164,6 @@ public class CreateQuizFragment extends Fragment {
         @Override
         public int getItemCount() {
             return questions.size();
-        }
-
-        public void add(Question question) {
-            questions.add(question);
         }
     }
 }

@@ -1,15 +1,13 @@
 package mprog.project.quizapp.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Quiz extends QuizBaseEntity {
 
     private String name;
     private String description;
-    private Set<Question> questions = new HashSet<>();
+    private List<Question> questions = new ArrayList<>();
 
     /* Getter and setters */
 
@@ -30,10 +28,14 @@ public class Quiz extends QuizBaseEntity {
     }
 
     public List<Question> getQuestions() {
-        return new ArrayList<>(questions);
+        return questions;
     }
 
-    public void setQuestions(Set<Question> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public void addQuestion(Question question){
+        questions.add(question);
     }
 }

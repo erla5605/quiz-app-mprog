@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,10 @@ public class CreateQuestionFragment extends Fragment
         implements SetCorrectAnswerDialogFragment.setCorrectAnswerDialogListener,
         CreateAnswerDialogFragment.CreateAnswerDialogFragmentListener {
 
+    interface CreateQuestionListener{
+        void questionCreated(Question question);
+    }
+
     private static final String TAG = "CreateQuestionFragment";
 
     private static final int SET_CORRECT_ANSWER_REQUEST_CODE = 200;
@@ -42,6 +48,12 @@ public class CreateQuestionFragment extends Fragment
     private FloatingActionButton addAnswerButton;
 
     private Question question = new Question();
+
+    private CreateQuestionListener listener;
+
+    public CreateQuestionFragment(CreateQuestionListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +92,32 @@ public class CreateQuestionFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_create, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.done_quiz_item:
+                if(isQuestionComplete()){
+                    question.setQuestionText(questionEditText.getText().toString());
+                    listener.questionCreated(question);
+                    getActivity().onBackPressed();
+
+                } else {
+                    Toast.makeText(getActivity(), R.string.incomplete_question_text, Toast.LENGTH_SHORT).show();
+                }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+
+
+    }
+
+    private boolean isQuestionComplete() {
+        return !questionEditText.getText().toString().isEmpty() && question.hasCorrectAnswer();
     }
 
     @Override

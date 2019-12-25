@@ -37,4 +37,7 @@
     <string name="create_answer">Create answer</string>
     <string name="create_answer_dialog_title">Create answer</string>
     <string name="enter_answer_hint">Enter answer</string>
+    <string name="incomplete_question_text">Question needs text and correct answer to be created</string>
+    <string name="failed_quiz_creation">Failed to create quiz</string>
+    <string name="incomplete_quiz_text">Quiz needs name, description and questions to be created</string>
 </resources>

@@ -1,5 +1,6 @@
 package mprog.project.quizapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,8 @@ import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class QuizListFragment extends Fragment {
+
+    private static final int CREATE_QUIZ_REQUEST_CODE = 200;
 
     private RecyclerView quizListRecyclerView;
     private QuizAdapter quizAdapter;
@@ -57,7 +61,7 @@ public class QuizListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.create_quiz_menu_item:
-                startActivity(CreateQuizActivity.newIntent(getActivity()));
+                startActivityForResult(CreateQuizActivity.newIntent(getActivity()),CREATE_QUIZ_REQUEST_CODE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -119,5 +123,22 @@ public class QuizListFragment extends Fragment {
             return quizzes.size();
         }
 
+        public void setQuizzes(List<Quiz> quizzes) {
+            this.quizzes = quizzes;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CREATE_QUIZ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            if(data.getBooleanExtra(CreateQuizFragment.QUIZ_ID_RESULT_EXTRA, false)){
+                quizAdapter.setQuizzes(QuizMapStorage.getInstance().getQuizzes());
+                quizAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getActivity(), R.string.failed_quiz_creation, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

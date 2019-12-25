@@ -62,6 +62,10 @@ public class Question extends QuizBaseEntity implements Parcelable{
         answers.get(this.positionOfCorrectAnswer).setCorrectAnswer(true);
     }
 
+    public boolean hasCorrectAnswer(){
+        return positionOfCorrectAnswer != -1;
+    }
+
     public QuestionType getType() {
         return type;
     }

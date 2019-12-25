@@ -1,9 +1,7 @@
 package mprog.project.quizapp.storage.startup;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import mprog.project.quizapp.model.Answer;
 import mprog.project.quizapp.model.Question;
@@ -14,13 +12,13 @@ public class QuizLoader {
     // Load static quizzes to MapStorage.
     public static List<Quiz> getQuizzes(){
         List<Answer> answers = createAnswers();
-        Set<Question> questions = createQuestions(answers);
+        List<Question> questions = createQuestions(answers);
         List<Quiz> quizzes = createQuizzes(questions);
         return quizzes;
     }
 
     // Creates quizzes.
-    private static List<Quiz> createQuizzes(Set<Question> questions) {
+    private static List<Quiz> createQuizzes(List<Question> questions) {
         List<Quiz> quizzes = new ArrayList<>();
 
         Quiz quiz1 = new Quiz();
@@ -51,8 +49,8 @@ public class QuizLoader {
     }
 
     // Creates questions.
-    private static Set<Question> createQuestions(List<Answer> answers) {
-        Set<Question> questions = new HashSet<>();
+    private static List<Question> createQuestions(List<Answer> answers) {
+        List<Question> questions = new ArrayList<>();
 
         Question question1 = new Question();
         question1.setQuestionText("Question1?");

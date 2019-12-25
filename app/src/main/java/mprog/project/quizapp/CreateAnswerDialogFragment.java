@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class CreateAnswerDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         answerEditText = new EditText(getActivity());
+        answerEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         answerEditText.setHint(R.string.enter_answer_hint);
     }
 

@@ -165,6 +165,8 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == QUESTION_ANSWER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             handleAnsweredQuestion(data);
         }
