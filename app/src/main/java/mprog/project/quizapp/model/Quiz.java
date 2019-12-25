@@ -55,6 +55,7 @@ public class Quiz extends QuizBaseEntity {
     }
 
     protected Quiz(Parcel in) {
+        super(in);
         name = in.readString();
         description = in.readString();
         questions = in.createTypedArrayList(Question.CREATOR);
@@ -79,6 +80,7 @@ public class Quiz extends QuizBaseEntity {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeTypedList(questions);
