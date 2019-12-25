@@ -74,7 +74,7 @@ public class QuizListFragment extends Fragment {
     private class QuizHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView quizNameTextView;
-        private TextView quizDescritptionTextView;
+        private TextView quizDescriptionTextView;
 
         private Quiz quiz;
 
@@ -82,7 +82,7 @@ public class QuizListFragment extends Fragment {
             super(inflater.inflate(R.layout.list_quiz_item, parent, false));
 
             quizNameTextView = itemView.findViewById(R.id.item_quiz_name_text_view);
-            quizDescritptionTextView = itemView.findViewById(R.id.item_quiz_description_text_view);
+            quizDescriptionTextView = itemView.findViewById(R.id.item_quiz_description_text_view);
 
             itemView.setOnClickListener(this);
         }
@@ -90,7 +90,7 @@ public class QuizListFragment extends Fragment {
         public void bind(Quiz quiz) {
             this.quiz = quiz;
             quizNameTextView.setText(quiz.getName());
-            quizDescritptionTextView.setText(quiz.getDescription());
+            quizDescriptionTextView.setText(quiz.getDescription());
         }
 
         @Override

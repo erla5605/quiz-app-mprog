@@ -31,18 +31,18 @@ public class QuizMapStorage {
     }
 
     // Add quiz to map.
-    public Quiz add(Quiz quiz){
+    public void add(Quiz quiz){
         if(quiz == null)
             throw new RuntimeException("Quiz can not be null");
 
         if(quiz.getId() == null){
-            Long id = quizzes.keySet().isEmpty() ? 1l : Collections.max(quizzes.keySet()) + 1l;
+            Long id = quizzes.keySet().isEmpty() ? 1L : Collections.max(quizzes.keySet()) + 1L;
             quiz.setId(id);
         }
 
         addQuestions(quiz);
 
-        return quizzes.put(quiz.getId(), quiz);
+        quizzes.put(quiz.getId(), quiz);
     }
 
     // Adds the question to storage

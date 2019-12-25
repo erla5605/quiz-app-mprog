@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,7 +99,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     }
 
     @Override
-    public void onYesButtonClicked(DialogFragment dialog) {
+    public void onYesButtonClicked() {
         double quizScorePercentage = getQuizScore();
         Intent intent = CompletedQuizActivity.newIntent(getActivity(), quiz.getId(), quizScorePercentage);
         startActivity(intent);

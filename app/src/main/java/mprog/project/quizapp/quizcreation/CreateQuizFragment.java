@@ -67,17 +67,20 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateQuestionFragment fragment = new CreateQuestionFragment(CreateQuizFragment.this);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
-
+                openCreateQuestion();
             }
         });
 
         return v;
+    }
+
+    private void openCreateQuestion() {
+        CreateQuestionFragment fragment = new CreateQuestionFragment(CreateQuizFragment.this);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -121,7 +124,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         questionAdapter.notifyDataSetChanged();
     }
 
-    private class QuestionHolder extends RecyclerView.ViewHolder {
+    private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Question question;
         private TextView questionText;
@@ -137,6 +140,10 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
             questionText.setText(question.getQuestionText());
         }
 
+        @Override
+        public void onClick(View v) {
+            openCreateQuestion();
+        }
     }
 
     private class QuestionAdapter extends RecyclerView.Adapter<QuestionHolder> {

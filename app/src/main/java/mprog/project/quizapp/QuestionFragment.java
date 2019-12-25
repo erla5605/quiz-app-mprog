@@ -3,6 +3,7 @@ package mprog.project.quizapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
@@ -107,7 +108,7 @@ public class QuestionFragment extends Fragment {
     private void createRadioButtonsForAnswers(View v) {
         for (Answer answer : answers) {
             RadioButton rButton = new RadioButton(v.getContext());
-            int radioButtonId = v.generateViewId();
+            int radioButtonId = View.generateViewId();
             rButton.setId(radioButtonId);
             radioButtonIds.add(radioButtonId);
             rButton.setText(answer.getAnswerText());
@@ -159,10 +160,18 @@ public class QuestionFragment extends Fragment {
             @Override
             public void onInit(int status) {
                 if(status == TextToSpeech.SUCCESS){
-                    tts.speak(question.getQuestionText(), TextToSpeech.QUEUE_FLUSH, null);
+                    speak();
                 }
             }
         });
+    }
+
+    private void speak() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tts.speak(question.getQuestionText(), TextToSpeech.QUEUE_FLUSH, null, null);
+        } else {
+            tts.speak(question.getQuestionText(), TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     private void installTTSData() {

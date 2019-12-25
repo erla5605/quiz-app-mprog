@@ -16,7 +16,7 @@ public class CompleteQuizDialogFragment extends DialogFragment {
 
     public interface CompleteQuizDialogListener{
 
-        void onYesButtonClicked(DialogFragment dialog);
+        void onYesButtonClicked();
     }
 
     private CompleteQuizDialogListener listener;
@@ -36,7 +36,7 @@ public class CompleteQuizDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.yes_dialog_text, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onYesButtonClicked(CompleteQuizDialogFragment.this);
+                listener.onYesButtonClicked();
             }
         });
         return builder.create();

@@ -124,7 +124,7 @@ public class WelcomeFragment extends Fragment {
                 .getPreferences(Context.MODE_PRIVATE)
                 .edit()
                 .putString(NAME_SAVED, name)
-                .commit();
+                .apply();
     }
 
     @Override

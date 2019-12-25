@@ -17,7 +17,7 @@ public class QuestionActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        Long questionId = getIntent().getLongExtra(QUESTION_ID_EXTRA, -1);
+        long questionId = getIntent().getLongExtra(QUESTION_ID_EXTRA, -1);
         if(questionId == -1){
             throw new RuntimeException("Could not get Question Id");
         }

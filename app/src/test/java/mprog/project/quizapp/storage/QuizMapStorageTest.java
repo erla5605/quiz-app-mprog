@@ -23,12 +23,12 @@ public class QuizMapStorageTest {
 
     @Test
     public void getQuizTest(){
-        assertNotNull(quizMap.getQuiz(1l));
+        assertNotNull(quizMap.getQuiz(1L));
     }
 
     @Test
     public void getQuiz1Test(){
-        assertEquals("Q1", quizMap.getQuiz(1l).getName());
+        assertEquals("Q1", quizMap.getQuiz(1L).getName());
     }
 
     @Test

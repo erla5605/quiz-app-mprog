@@ -21,7 +21,7 @@ public class SetCorrectAnswerDialogFragment extends DialogFragment {
     private static final String ANSWER_POSITION_ARGS = "answer position";
 
 
-    public static final SetCorrectAnswerDialogFragment newInstance(int answerPosition){
+    public static SetCorrectAnswerDialogFragment newInstance(int answerPosition){
         Bundle args = new Bundle();
         args.putInt(ANSWER_POSITION_ARGS, answerPosition);
 

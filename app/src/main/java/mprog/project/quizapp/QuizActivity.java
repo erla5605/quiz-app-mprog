@@ -19,7 +19,7 @@ public class QuizActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        Long id = getIntent().getLongExtra(QUIZ_ID_EXTRA, -1);
+        long id = getIntent().getLongExtra(QUIZ_ID_EXTRA, -1);
         if(id == -1){
             throw new RuntimeException("Could not get Quiz Id");
         }
