@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.storage.startup.QuizLoader;
 
@@ -40,36 +39,14 @@ public class QuizMapStorage {
             quiz.setId(id);
         }
 
-        addQuestions(quiz);
-
         quizzes.put(quiz.getId(), quiz);
-    }
-
-    // Adds the question to storage
-    private void addQuestions(Quiz quiz) {
-        QuestionMapStorage questionMapStorage = QuestionMapStorage.getInstance();
-        for(Question question : quiz.getQuestions()){
-            questionMapStorage.add(question);
-        }
     }
 
     // Delete quiz from map.
     public Quiz delete(Long id){
         Quiz deletedQuiz = quizzes.remove(id);
 
-        deleteQuestions(deletedQuiz);
-
         return deletedQuiz;
-    }
-
-    // Delete questions from storage.
-    private void deleteQuestions(Quiz deletedQuiz) {
-        if(deletedQuiz != null) {
-            QuestionMapStorage questionMapStorage = QuestionMapStorage.getInstance();
-            for(Question question : deletedQuiz.getQuestions()){
-                questionMapStorage.delete(question.getId());
-            }
-        }
     }
 
     // Get quiz from map by id.

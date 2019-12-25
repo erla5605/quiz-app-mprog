@@ -25,13 +25,12 @@ import java.util.List;
 
 import mprog.project.quizapp.model.Answer;
 import mprog.project.quizapp.model.Question;
-import mprog.project.quizapp.storage.QuestionMapStorage;
 
 public class QuestionFragment extends Fragment {
 
     public static final String ANSWER_EXTRA = "answer_boolean";
-    public static final String QUESTION_EXTRA = "answered_question_id";
-    public static final String QUESTION_ID_ARG = "question_id";
+    public static final String QUESTION_EXTRA = "answered_question";
+    public static final String QUESTION_ARG = "question";
     private static final int TTS_REQUEST_CODE = 200;
 
     private Question question;
@@ -47,9 +46,9 @@ public class QuestionFragment extends Fragment {
 
     private TextToSpeech tts;
 
-    public static QuestionFragment newInstance(Long quizId) {
+    public static QuestionFragment newInstance(Question question) {
         Bundle args = new Bundle();
-        args.putLong(QUESTION_ID_ARG, quizId);
+        args.putParcelable(QUESTION_ARG, question);
 
         QuestionFragment questionFragment = new QuestionFragment();
         questionFragment.setArguments(args);
@@ -60,8 +59,7 @@ public class QuestionFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Long questionId = getArguments().getLong(QUESTION_ID_ARG);
-        question = QuestionMapStorage.getInstance().getQuestion(questionId);
+        question = getArguments().getParcelable(QUESTION_ARG);
         answers = question.getAnswers();
     }
 
@@ -97,7 +95,7 @@ public class QuestionFragment extends Fragment {
                     setQuestionResult(id);
                     getActivity().onBackPressed();
                 } else {
-                    Toast.makeText(getContext(), "NO ANSWER", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.missing_answer, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -137,7 +135,7 @@ public class QuestionFragment extends Fragment {
         boolean answeredCorrectly = answers.get(index).isCorrectAnswer();
         Bundle extras = new Bundle();
         extras.putBoolean(ANSWER_EXTRA, answeredCorrectly);
-        extras.putLong(QUESTION_EXTRA, question.getId());
+        extras.putParcelable(QUESTION_EXTRA, question);
         Intent intent = new Intent().putExtras(extras);
         getActivity().setResult(Activity.RESULT_OK, intent);
     }

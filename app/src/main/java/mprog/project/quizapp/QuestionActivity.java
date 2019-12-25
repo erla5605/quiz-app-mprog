@@ -5,23 +5,25 @@ import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 
+import mprog.project.quizapp.model.Question;
+
 public class QuestionActivity extends SingleFragmentActivity {
 
-    private static final String QUESTION_ID_EXTRA = "mprog.project.question_id";
+    private static final String QUESTION_EXTRA = "question";
 
-    public static Intent newIntent(Context context, Long questionId){
+    public static Intent newIntent(Context context, Question question){
         Intent intent = new Intent(context, QuestionActivity.class);
-        intent.putExtra(QUESTION_ID_EXTRA, questionId);
+        intent.putExtra(QUESTION_EXTRA, question);
         return intent;
     }
 
     @Override
     protected Fragment createFragment() {
-        long questionId = getIntent().getLongExtra(QUESTION_ID_EXTRA, -1);
-        if(questionId == -1){
-            throw new RuntimeException("Could not get Question Id");
+        Question question = getIntent().getParcelableExtra(QUESTION_EXTRA);
+        if(question == null){
+            throw new RuntimeException("Could not get question");
         }
 
-        return QuestionFragment.newInstance(questionId);
+        return QuestionFragment.newInstance(question);
     }
 }

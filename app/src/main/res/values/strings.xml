@@ -48,4 +48,5 @@
     <string name="add_video_hint">Enter youtube URL</string>
     <string name="add_video">Add video</string>
     <string name="enter_phone_number">Phone number</string>
+    <string name="missing_answer">Question not answered</string>
 </resources>

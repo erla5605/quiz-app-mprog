@@ -129,7 +129,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
 
         @Override
         public void onClick(View v) {
-            Intent intent = QuestionActivity.newIntent(getActivity(), question.getId());
+            Intent intent = QuestionActivity.newIntent(getActivity(), question);
             startActivityForResult(intent, QUESTION_ANSWER_REQUEST_CODE);
         }
     }
@@ -174,8 +174,8 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     private void handleAnsweredQuestion(Intent data) {
         Bundle extras = data.getExtras();
         boolean answeredCorrectly = extras.getBoolean(QuestionFragment.ANSWER_EXTRA);
-        long answeredQuestionId = extras.getLong(QuestionFragment.QUESTION_EXTRA);
-        questionAnswers.put(answeredQuestionId, answeredCorrectly ? 1 : 0);
+        Question answeredQuestion = extras.getParcelable(QuestionFragment.QUESTION_EXTRA);
+        questionAnswers.put(answeredQuestion.getId(), answeredCorrectly ? 1 : 0);
         questionAdapter.notifyDataSetChanged();
     }
 }
