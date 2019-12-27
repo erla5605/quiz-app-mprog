@@ -21,7 +21,7 @@ public class QuizLoader {
         List<Quiz> quizzes = new ArrayList<>();
 
         Quiz quiz1 = new Quiz();
-        quiz1.setName("Q1");
+        quiz1.setName("Q1 ");
         quiz1.setDescription("This is Q1");
         quiz1.setQuestions(questions);
 
