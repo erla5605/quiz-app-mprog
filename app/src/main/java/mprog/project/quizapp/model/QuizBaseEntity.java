@@ -3,6 +3,7 @@ package mprog.project.quizapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class QuizBaseEntity implements Parcelable {
@@ -34,5 +35,18 @@ public abstract class QuizBaseEntity implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof QuizBaseEntity)) return false;
+        QuizBaseEntity that = (QuizBaseEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

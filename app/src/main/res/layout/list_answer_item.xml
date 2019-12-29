@@ -4,6 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <ImageButton
+        android:id="@+id/delete_answer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_delete"
+        android:background="@null"
+        android:layout_gravity="center"/>
+
     <EditText
         android:id="@+id/item_answer_edit_text"
         android:layout_width="match_parent"

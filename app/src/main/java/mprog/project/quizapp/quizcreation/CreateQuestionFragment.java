@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -182,11 +183,21 @@ public class CreateQuestionFragment extends Fragment
     private class AnswerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Answer answer;
+        private ImageButton deleteButton;
         private EditText answerEditText;
         private ImageView correctAnswerImageView;
 
         public AnswerHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_answer_item, parent, false));
+
+            deleteButton = itemView.findViewById(R.id.delete_answer_button);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    question.deleteAnswer(answer);
+                    answerAdapter.notifyDataSetChanged();
+                }
+            });
 
             answerEditText = itemView.findViewById(R.id.item_answer_edit_text);
             answerEditText.addTextChangedListener(new TextWatcher() {

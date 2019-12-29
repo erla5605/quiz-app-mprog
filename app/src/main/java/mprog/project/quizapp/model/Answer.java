@@ -3,7 +3,7 @@ package mprog.project.quizapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Answer implements Parcelable {
+public class Answer extends QuizBaseEntity implements Parcelable {
 
     private String answerText;
     private boolean isCorrectAnswer;
@@ -12,6 +12,7 @@ public class Answer implements Parcelable {
     }
 
     protected Answer(Parcel in) {
+        super(in);
         answerText = in.readString();
         isCorrectAnswer = in.readInt() != 0;
     }
@@ -35,6 +36,7 @@ public class Answer implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeString(answerText);
         dest.writeInt(isCorrectAnswer ? 1 : 0);
     }
