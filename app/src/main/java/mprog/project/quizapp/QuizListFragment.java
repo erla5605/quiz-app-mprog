@@ -136,7 +136,7 @@ public class QuizListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == CREATE_QUIZ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            if(data.getBooleanExtra(CreateQuizFragment.QUIZ_ID_RESULT_EXTRA, false)){
+            if(data.getBooleanExtra(CreateQuizFragment.QUIZ_RESULT_EXTRA, false)){
                 quizAdapter.setQuizzes(QuizMapStorage.getInstance().getQuizzes());
                 quizAdapter.notifyDataSetChanged();
             } else {

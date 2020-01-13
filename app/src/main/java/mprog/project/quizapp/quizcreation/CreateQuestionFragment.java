@@ -3,6 +3,7 @@ package mprog.project.quizapp.quizcreation;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,20 +36,22 @@ public class CreateQuestionFragment extends Fragment
         CreateAnswerDialogFragment.CreateAnswerDialogFragmentListener,
         AddVideoDialogFragment.AddVideoDialogFragmentListener {
 
+    private static final String TAG = "QuizAPP";
+    private static final String QUESTION_KEY = "question_key";
 
     interface CreateQuestionListener {
         void questionCreated(Question question);
     }
 
-    private static final String TAG = "CreateQuestionFragment";
+    public static final String QUESTION_ARG = "question";
 
     private static final int SET_CORRECT_ANSWER_REQUEST_CODE = 200;
+
     private static final int CREATE_ANSWER_REQUEST_CODE = 201;
     private static final int ADD_VIDEO_REQUEST_CODE = 202;
     private static final String SET_CORRECT_ANSWER_TAG = "set correct answer";
     private static final String CREATE_ANSWER_TAG = "create answer";
     private static final String ADD_VIDEO_TAG = "add video";
-
     private EditText questionEditText;
 
     private Button addVideoButton;
@@ -56,32 +59,39 @@ public class CreateQuestionFragment extends Fragment
     private TextView videoUrlTextView;
 
     private RecyclerView answerRecyclerView;
-    private AnswerAdapter answerAdapter;
 
+    private AnswerAdapter answerAdapter;
     private FloatingActionButton addAnswerButton;
 
-    private Question question;
+    private Question question = new Question();
+
+    private boolean updateQuestion;
 
     private CreateQuestionListener listener;
 
-    private boolean newQuestion;
+    public static CreateQuestionFragment newInstance(Question question) {
+        Bundle args = new Bundle();
+        args.putParcelable(QUESTION_ARG, question);
 
-    public CreateQuestionFragment() {
-    }
-
-    public CreateQuestionFragment(Question question, CreateQuestionListener listener) {
-        this.question = question;
-        this.listener = listener;
-    }
-
-    public CreateQuestionFragment(CreateQuestionListener listener) {
-        this(new Question(), listener);
-        newQuestion = true;
+        CreateQuestionFragment createQuestionFragment = new CreateQuestionFragment();
+        createQuestionFragment.setArguments(args);
+        return createQuestionFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        if(savedInstanceState != null){
+            question = savedInstanceState.getParcelable(QUESTION_KEY);
+        } else {
+            Bundle args = getArguments();
+            if (args != null) {
+                question = args.getParcelable(QUESTION_ARG);
+                updateQuestion = true;
+            }
+        }
 
         setHasOptionsMenu(true);
     }
@@ -135,7 +145,6 @@ public class CreateQuestionFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.done_quiz_item:
                 if (isQuestionComplete()) {
@@ -143,18 +152,16 @@ public class CreateQuestionFragment extends Fragment
                     if (question.getType() == null) {
                         question.setType(Question.QuestionType.TEXT);
                     }
-                    if(newQuestion){
+                    getActivity().onBackPressed();
+                    if (!updateQuestion) {
                         listener.questionCreated(question);
                     }
-                    getActivity().onBackPressed();
                 } else {
                     Toast.makeText(getActivity(), R.string.incomplete_question_text, Toast.LENGTH_SHORT).show();
                 }
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
 
     private boolean isQuestionComplete() {
@@ -181,9 +188,22 @@ public class CreateQuestionFragment extends Fragment
         question.addAnswer(newAnswer);
         answerAdapter.setAnswers(question.getAnswers());
         answerAdapter.notifyItemInserted(question.getAnswers().size() - 1);
+
+        Log.d(TAG,question.toString());
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(QUESTION_KEY, question);
+    }
+
+    public void setCreateQuestionListener(CreateQuestionListener listener) {
+        this.listener = listener;
     }
 
     private class AnswerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
 
         private Answer answer;
         private ImageButton deleteButton;
@@ -245,6 +265,7 @@ public class CreateQuestionFragment extends Fragment
 
     private class AnswerAdapter extends RecyclerView.Adapter<AnswerHolder> {
 
+
         private List<Answer> answers;
 
         public AnswerAdapter(List<Answer> answers) {
@@ -274,7 +295,6 @@ public class CreateQuestionFragment extends Fragment
         public void setAnswers(List<Answer> answers) {
             this.answers = answers;
         }
+
     }
-
-
 }

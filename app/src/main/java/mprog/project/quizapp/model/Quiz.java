@@ -3,13 +3,12 @@ package mprog.project.quizapp.model;
 import android.os.Parcel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Quiz extends QuizBaseEntity {
 
     private String name;
     private String description;
-    private List<Question> questions = new ArrayList<>();
+    private ArrayList<Question> questions = new ArrayList<>();
 
     public Quiz() {
     }
@@ -32,11 +31,11 @@ public class Quiz extends QuizBaseEntity {
         this.description = description;
     }
 
-    public List<Question> getQuestions() {
+    public ArrayList<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
     }
 

@@ -12,12 +12,12 @@ public class QuizLoader {
     // Load static quizzes to MapStorage.
     public static List<Quiz> getQuizzes(){
         List<Answer> answers = createAnswers();
-        List<Question> questions = createQuestions(answers);
+        ArrayList<Question> questions = createQuestions(answers);
         return createQuizzes(questions);
     }
 
     // Creates quizzes.
-    private static List<Quiz> createQuizzes(List<Question> questions) {
+    private static List<Quiz> createQuizzes(ArrayList<Question> questions) {
         List<Quiz> quizzes = new ArrayList<>();
 
         Quiz quiz1 = new Quiz();
@@ -45,8 +45,8 @@ public class QuizLoader {
     }
 
     // Creates questions.
-    private static List<Question> createQuestions(List<Answer> answers) {
-        List<Question> questions = new ArrayList<>();
+    private static ArrayList<Question> createQuestions(List<Answer> answers) {
+        ArrayList<Question> questions = new ArrayList<>();
 
         Question question1 = new Question();
         question1.setQuestionText("Question1?");

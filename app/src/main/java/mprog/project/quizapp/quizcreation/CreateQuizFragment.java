@@ -33,7 +33,8 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class CreateQuizFragment extends Fragment implements CreateQuestionFragment.CreateQuestionListener {
 
-    public static final String QUIZ_ID_RESULT_EXTRA = "result quiz id";
+    public static final String QUIZ_RESULT_EXTRA = "result quiz id";
+    private static final String QUESTIONS_KEY = "questions";
 
     private EditText nameEditText;
     private EditText descriptionEditText;
@@ -48,6 +49,10 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null){
+            quiz.setQuestions(savedInstanceState.<Question>getParcelableArrayList(QUESTIONS_KEY));
+        }
 
         setHasOptionsMenu(true);
     }
@@ -70,7 +75,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateQuestionFragment fragment = new CreateQuestionFragment(CreateQuizFragment.this);
+                CreateQuestionFragment fragment = new CreateQuestionFragment();
                 openCreateQuestion(fragment);
             }
         });
@@ -99,7 +104,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
                 if(isQuizComplete()){
                     createQuiz();
                     Intent intent = new Intent();
-                    intent.putExtra(QUIZ_ID_RESULT_EXTRA, true);
+                    intent.putExtra(QUIZ_RESULT_EXTRA, true);
                     getActivity().setResult(Activity.RESULT_OK, intent);
                     getActivity().finish();
                 } else {
@@ -142,6 +147,13 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         questionAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(QUESTIONS_KEY, quiz.getQuestions());
+
+    }
+
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Question question;
@@ -181,7 +193,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
         @Override
         public void onClick(View v) {
-            CreateQuestionFragment fragment = new CreateQuestionFragment(question,CreateQuizFragment.this);
+            CreateQuestionFragment fragment = CreateQuestionFragment.newInstance(question);
             openCreateQuestion(fragment);
         }
     }
