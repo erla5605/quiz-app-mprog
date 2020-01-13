@@ -18,6 +18,7 @@ import mprog.project.quizapp.R;
 
 public class AddVideoDialogFragment extends DialogFragment {
 
+    // Listener interface to handle the video url.
     interface AddVideoDialogFragmentListener {
         void addVideo(String videoUrl);
     }
@@ -26,6 +27,7 @@ public class AddVideoDialogFragment extends DialogFragment {
 
     private AddVideoDialogFragmentListener listener;
 
+    // OnCreate creates the edit text for the video url.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +37,15 @@ public class AddVideoDialogFragment extends DialogFragment {
         videoUrlEditText.setHint(R.string.add_video_hint);
     }
 
+/*  Creates the dialog to enter the video url.
+    Positive button checks the url, calls on the listener if url is ok.
+    Negative button cancels the dialog.*/
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_video)
                 .setView(videoUrlEditText)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -58,9 +57,16 @@ public class AddVideoDialogFragment extends DialogFragment {
                         }
                     }
                 })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
                 .create();
     }
 
+    // Sets the listener to the target fragment which started the dialog fragment.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

@@ -38,6 +38,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
 
     private double score;
 
+    // Creates and returns a CompletedQuizFragment instance with arguments for quiz id and quiz score.
     public static CompletedQuizFragment newInstance(UUID quizId, double score) {
         Bundle args = new Bundle();
         args.putSerializable(QUIZ_ID_ARG, quizId);
@@ -48,6 +49,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         return fragment;
     }
 
+    // OnCreate gets the quiz that had been completed with the id from the arguments.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         quiz = QuizMapStorage.getInstance().getQuiz((UUID) getArguments().getSerializable(QUIZ_ID_ARG));
     }
 
+    // OnCreateView creates the view, sets up the text views with the text from the quiz and share button.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
 
         shareButton = v.findViewById(R.id.share_completed_quiz);
         shareButton.setOnClickListener(new View.OnClickListener() {
+            // Starts dialog fragment to pick between sharing result via sms or email.
             @Override
             public void onClick(View v) {
                 ShareCompletedQuizDialogFragment dialog = new ShareCompletedQuizDialogFragment();
@@ -81,23 +85,27 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         return v;
     }
 
+    // Creates the text string for the Date using yyyy-MM-dd HH:mm pattern.
     private String getDateText() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return format.format(Calendar.getInstance().getTime());
     }
 
+    // Creates a new instance of ShareEmailFragment
     @Override
     public void onEmailButtonClicked() {
         ShareEmailFragment fragment = ShareEmailFragment.newInstance(quiz.getName(), score);
         swapFragment(fragment);
     }
 
+    // Creates a new instance of ShareSmsFragment
     @Override
     public void onSMSButtonClicked() {
         ShareSMSFragment fragment = ShareSMSFragment.newInstance(quiz.getName(), score);
         swapFragment(fragment);
     }
 
+    // Swaps the fragment to display the share fragment that was passed in.
     private void swapFragment(Fragment fragment) {
         getFragmentManager()
                 .beginTransaction()

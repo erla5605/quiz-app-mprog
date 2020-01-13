@@ -46,17 +46,19 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
     private Quiz quiz = new Quiz();
 
+    // OnCreate, set the menu. If the savedInstanceState is not null set the quiz questions.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             quiz.setQuestions(savedInstanceState.<Question>getParcelableArrayList(QUESTIONS_KEY));
         }
 
         setHasOptionsMenu(true);
     }
 
+    // OnCreateView, creates the view, sets up the edit texts, the button, and the recycler view.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
         addQuestionButton = v.findViewById(R.id.add_question_floating_button);
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
+            // Creates the CreateQuestionFragment for a new question.
             @Override
             public void onClick(View v) {
                 CreateQuestionFragment fragment = new CreateQuestionFragment();
@@ -83,6 +86,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         return v;
     }
 
+    // Starts the CreateQuestionFragment.
     private void openCreateQuestion(CreateQuestionFragment fragment) {
         getFragmentManager()
                 .beginTransaction()
@@ -91,17 +95,20 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
                 .commit();
     }
 
+    // Creates the menu.
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_create, menu);
     }
 
+    /*  Handles if user has selected a menu item
+        Checks if the quiz is completed, if so creates the quiz and finishes the activity.*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_quiz_item:
-                if(isQuizComplete()){
+                if (isQuizComplete()) {
                     createQuiz();
                     Intent intent = new Intent();
                     intent.putExtra(QUIZ_RESULT_EXTRA, true);
@@ -116,37 +123,42 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         }
     }
 
+    // Creates the quiz by setting it's name and description and saving it to storage.
     private void createQuiz() {
         quiz.setName(nameEditText.getText().toString());
         quiz.setDescription(descriptionEditText.getText().toString());
         QuizMapStorage.getInstance().add(quiz);
     }
 
+    // Checks if everything necessary for the quiz has been set for the quiz to be complete.
     private boolean isQuizComplete() {
         return !nameEditText.getText().toString().isEmpty() &&
                 !descriptionEditText.getText().toString().isEmpty() &&
                 isQuestionsComplete();
     }
 
+    // Checks if the questions are complete.
     private boolean isQuestionsComplete() {
-        if(quiz.getQuestions().isEmpty()){
+        if (quiz.getQuestions().isEmpty()) {
             return false;
         }
 
-        for(Question q: quiz.getQuestions()){
-            if(!q.hasCorrectAnswer()){
+        for (Question q : quiz.getQuestions()) {
+            if (!q.hasCorrectAnswer()) {
                 return false;
             }
         }
         return true;
     }
 
+    // Adds the question to the quiz, and notifies the adapter.
     @Override
     public void questionCreated(Question question) {
         quiz.addQuestion(question);
         questionAdapter.notifyDataSetChanged();
     }
 
+    // Saves the list of questions, to handle rotation.
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -154,6 +166,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
     }
 
+    // View holder for the recycler view.
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Question question;
@@ -161,11 +174,13 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         private TextView questionText;
         private ImageView questionTypeImageView;
 
+        // Constructor for the QuestionHolder, sets up the button, text view and image view.
         public QuestionHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_new_question_item, parent, false));
 
             deleteButton = itemView.findViewById(R.id.delete_question_button);
             deleteButton.setOnClickListener(new View.OnClickListener() {
+                // removes the question and notifies the adapter.
                 @Override
                 public void onClick(View view) {
                     quiz.removeQuestion(question);
@@ -179,18 +194,20 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
             itemView.setOnClickListener(this);
         }
 
+        // Binds the holder to a question, and sets the text and image drawable.
         public void bind(Question question) {
             this.question = question;
             questionText.setText(question.getQuestionText());
 
             questionTypeImageView.setImageDrawable(getDrawable(question));
         }
-
+        // Gets the image drawable based on question type.
         private Drawable getDrawable(Question question) {
             return question.getType() == Question.QuestionType.VIDEO ?
                     getResources().getDrawable(R.drawable.ic_action_video) : getResources().getDrawable(R.drawable.ic_action_text);
         }
 
+        // // Creates the CreateQuestionFragment to update the question.
         @Override
         public void onClick(View v) {
             CreateQuestionFragment fragment = CreateQuestionFragment.newInstance(question);
@@ -198,14 +215,17 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
         }
     }
 
+    // Adapter for the recycler view.
     private class QuestionAdapter extends RecyclerView.Adapter<QuestionHolder> {
 
         private List<Question> questions;
 
+        // Creates the adapter with a list of questions.
         public QuestionAdapter(List<Question> questions) {
             this.questions = questions;
         }
 
+        // Creates question holder.
         @NonNull
         @Override
         public QuestionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -214,12 +234,14 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
             return new QuestionHolder(inflater, parent);
         }
 
+        // Calls on the holder to bind a question.
         @Override
         public void onBindViewHolder(@NonNull QuestionHolder holder, int position) {
             Question question = questions.get(position);
             holder.bind(question);
         }
 
+        // Returns the question list.
         @Override
         public int getItemCount() {
             return questions.size();

@@ -8,6 +8,25 @@ public class Answer extends QuizBaseEntity implements Parcelable {
     private String answerText;
     private boolean isCorrectAnswer;
 
+
+    /* Getter and setters */
+    public String getAnswerText() {
+        return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
+
+    public boolean isCorrectAnswer() {
+        return isCorrectAnswer;
+    }
+
+    public void setCorrectAnswer(boolean correctAnswer) {
+        isCorrectAnswer = correctAnswer;
+    }
+
+    /* Implementation of the Parcelable interface */
     public Answer() {
     }
 
@@ -41,24 +60,8 @@ public class Answer extends QuizBaseEntity implements Parcelable {
         dest.writeInt(isCorrectAnswer ? 1 : 0);
     }
 
-    /* Getter and setters */
 
-    public String getAnswerText() {
-        return answerText;
-    }
-
-    public void setAnswerText(String answerText) {
-        this.answerText = answerText;
-    }
-
-    public boolean isCorrectAnswer() {
-        return isCorrectAnswer;
-    }
-
-    public void setCorrectAnswer(boolean correctAnswer) {
-        isCorrectAnswer = correctAnswer;
-    }
-
+    /* To string method for Answer */
     @Override
     public String toString() {
         return "Answer{" +

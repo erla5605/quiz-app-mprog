@@ -26,6 +26,7 @@ public class ShareSMSFragment extends Fragment {
 
     private static final int SMS_PERMISSION_REQUEST = 200;
 
+    // String array for permissions required to send sms.
     private static final String[] PERMISSIONS = new String[]{
             Manifest.permission.SEND_SMS,
             Manifest.permission.READ_PHONE_STATE
@@ -41,6 +42,7 @@ public class ShareSMSFragment extends Fragment {
     private String quizName;
     private double score;
 
+    // Creates and returns a ShareSMSFragment instance with arguments for quiz name and quiz score.
     public static ShareSMSFragment newInstance(String quizName, double score) {
         Bundle args = new Bundle();
         args.putString(QUIZ_NAME_ARG, quizName);
@@ -51,6 +53,7 @@ public class ShareSMSFragment extends Fragment {
         return fragment;
     }
 
+    // OnCreate gets the quis name and score from args and set them in the fragment.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,7 @@ public class ShareSMSFragment extends Fragment {
         score = getArguments().getDouble(SCORE_ARG);
     }
 
+    // OnCreateView creates the view, sets up the text views and button.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class ShareSMSFragment extends Fragment {
 
         sendButton = v.findViewById(R.id.sms_send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
+            // Calls on the sendSMS if user has granted permission, else request the permission from the user.
             @Override
             public void onClick(View v) {
                 if (hasPermission()) {
@@ -83,10 +88,13 @@ public class ShareSMSFragment extends Fragment {
         return v;
     }
 
+    // Get the default message string.
     private String getMessageText() {
         return String.format(getString(R.string.share_completed_quiz_text), quizName, score);
     }
 
+/*  Get SmsManager and uses it to send the sms to the recipient and after that closes the fragment.
+    Checks that phone number is not missing*/
     private void sendSMS() {
         smsManger = SmsManager.getDefault();
         if (smsManger == null) {
@@ -94,15 +102,21 @@ public class ShareSMSFragment extends Fragment {
             return;
         }
         String smsRecipient = toEditText.getText().toString();
+        if(smsRecipient.isEmpty()){
+            Toast.makeText(getActivity(), getString(R.string.no_phone_number), Toast.LENGTH_SHORT).show();
+            return;
+        }
         smsManger.sendTextMessage(smsRecipient, null, getMessageText(), null, null);
         getActivity().onBackPressed();
     }
 
+    // Checks if the user has granted the permissions to send sms.
     private boolean hasPermission() {
         return ContextCompat.checkSelfPermission(getActivity(), PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(), PERMISSIONS[1]) == PackageManager.PERMISSION_GRANTED;
     }
 
+    // Requests the user of the permissions needed to send sms.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == SMS_PERMISSION_REQUEST) {
@@ -115,6 +129,7 @@ public class ShareSMSFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    // Checks if user has granted permission.
     private boolean isPermissionGranted(@NonNull int[] grantResults) {
         for (int i : grantResults) {
             if (i != PackageManager.PERMISSION_GRANTED) {

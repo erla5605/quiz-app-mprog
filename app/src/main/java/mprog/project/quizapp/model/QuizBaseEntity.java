@@ -10,21 +10,22 @@ public abstract class QuizBaseEntity implements Parcelable {
 
     private UUID id = UUID.randomUUID();
 
+
     /* Getter and setters */
-
-    public QuizBaseEntity() {
-    }
-
-    protected QuizBaseEntity(Parcel in) {
-        this.id = (UUID) in.readSerializable();
-    }
-
     public UUID getId() {
         return id;
     }
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    /* Implementation of the Parcelable interface */
+    public QuizBaseEntity() {
+    }
+
+    protected QuizBaseEntity(Parcel in) {
+        this.id = (UUID) in.readSerializable();
     }
 
     @Override
@@ -37,6 +38,7 @@ public abstract class QuizBaseEntity implements Parcelable {
         dest.writeSerializable(id);
     }
 
+    // Equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,6 +47,7 @@ public abstract class QuizBaseEntity implements Parcelable {
         return Objects.equals(id, that.id);
     }
 
+    // Hashcode
     @Override
     public int hashCode() {
         return Objects.hash(id);

@@ -1,4 +1,4 @@
-package mprog.project.quizapp.quizcomplete;
+package mprog.project.quizapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,18 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import mprog.project.quizapp.R;
-
 public class CompleteQuizDialogFragment extends DialogFragment {
 
+    // Listener interface if yes button is clicked.
     public interface CompleteQuizDialogListener{
-
         void onYesButtonClicked();
     }
 
     private CompleteQuizDialogListener listener;
 
 
+/*  Creates the dialog.
+    Positive button calls on listener.
+    Negative button cancels dialog.*/
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class CompleteQuizDialogFragment extends DialogFragment {
         builder.setNegativeButton(R.string.cancel_dialog_text, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dismiss();
+                dialog.cancel();
             }
         });
         builder.setPositiveButton(R.string.yes_dialog_text, new DialogInterface.OnClickListener() {
@@ -42,6 +43,7 @@ public class CompleteQuizDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    // Sets the listener to the target fragment which started the dialog fragment.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

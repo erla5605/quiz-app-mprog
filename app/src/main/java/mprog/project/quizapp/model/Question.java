@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Question extends QuizBaseEntity implements Parcelable {
 
+    // Enum for types of questions.
     public enum QuestionType {
         TEXT,
         VIDEO
@@ -40,35 +41,6 @@ public class Question extends QuizBaseEntity implements Parcelable {
         this.answers = answers;
     }
 
-    public void addAnswer(Answer newAnswer) {
-        if (newAnswer == null) {
-            return;
-        }
-
-        answers.add(newAnswer);
-    }
-
-    public void removeAnswer(Answer removeAnswer) {
-        if (answers.remove(removeAnswer) && correctAnswer != null && correctAnswer.equals(removeAnswer)) {
-            correctAnswer = null;
-        }
-    }
-
-    public void setPositionOfCorrectAnswer(int positionOfCorrectAnswer) {
-        if (positionOfCorrectAnswer > answers.size())
-            throw new IllegalArgumentException("Position of Correct Answer out of bounds");
-
-        if (this.correctAnswer != null) {
-            this.correctAnswer.setCorrectAnswer(false);
-        }
-        this.correctAnswer = answers.get(positionOfCorrectAnswer);
-        this.correctAnswer.setCorrectAnswer(true);
-    }
-
-    public boolean hasCorrectAnswer() {
-        return correctAnswer != null;
-    }
-
     public QuestionType getType() {
         return type;
     }
@@ -85,6 +57,42 @@ public class Question extends QuizBaseEntity implements Parcelable {
         this.video = video;
     }
 
+
+    // Add answer to question
+    public void addAnswer(Answer newAnswer) {
+        if (newAnswer == null) {
+            return;
+        }
+
+        answers.add(newAnswer);
+    }
+
+    // Remove answer from question
+    public void removeAnswer(Answer removeAnswer) {
+        if (answers.remove(removeAnswer) && correctAnswer != null && correctAnswer.equals(removeAnswer)) {
+            correctAnswer = null;
+        }
+    }
+
+    /* Sets the position of the correct answer, and set correct answer in Answer.
+       Clears previous correct answer.*/
+    public void setPositionOfCorrectAnswer(int positionOfCorrectAnswer) {
+        if (positionOfCorrectAnswer > answers.size())
+            throw new IllegalArgumentException("Position of Correct Answer out of bounds");
+
+        if (this.correctAnswer != null) {
+            this.correctAnswer.setCorrectAnswer(false);
+        }
+        this.correctAnswer = answers.get(positionOfCorrectAnswer);
+        this.correctAnswer.setCorrectAnswer(true);
+    }
+
+    // Check if question has a correct answer.
+    public boolean hasCorrectAnswer() {
+        return correctAnswer != null;
+    }
+
+    /* Implementation of the Parcelable interface */
     protected Question(Parcel in) {
         super(in);
         questionText = in.readString();
@@ -121,6 +129,7 @@ public class Question extends QuizBaseEntity implements Parcelable {
         dest.writeString(video);
     }
 
+    /* To string method for Question */
     @Override
     public String toString() {
         return "Question{" +

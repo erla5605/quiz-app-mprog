@@ -39,6 +39,7 @@ public class Quiz extends QuizBaseEntity {
         this.questions = questions;
     }
 
+    // Add question to quiz
     public void addQuestion(Question newQuestion) {
         if (newQuestion == null) {
             return;
@@ -47,20 +48,13 @@ public class Quiz extends QuizBaseEntity {
         questions.add(newQuestion);
     }
 
+    // Remove question from quiz
     public void removeQuestion(Question removeQuestion) {
         questions.remove(removeQuestion);
 
     }
 
-    @Override
-    public String toString() {
-        return "Quiz{" +
-                "id=" + getId() +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", questions=" + questions +
-                '}';
-    }
+    /* Implementation of the Parcelable interface */
 
     protected Quiz(Parcel in) {
         super(in);
@@ -68,7 +62,6 @@ public class Quiz extends QuizBaseEntity {
         description = in.readString();
         questions = in.createTypedArrayList(Question.CREATOR);
     }
-
     public static final Creator<Quiz> CREATOR = new Creator<Quiz>() {
         @Override
         public Quiz createFromParcel(Parcel in) {
@@ -92,5 +85,16 @@ public class Quiz extends QuizBaseEntity {
         dest.writeString(name);
         dest.writeString(description);
         dest.writeTypedList(questions);
+    }
+
+    /* To string method for Quiz */
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "id=" + getId() +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", questions=" + questions +
+                '}';
     }
 }

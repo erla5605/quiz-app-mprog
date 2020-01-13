@@ -31,6 +31,7 @@ public class ShareEmailFragment extends Fragment {
 
     private boolean editing;
 
+    // Creates and returns a ShareEmailFragment instance with arguments for quiz name and quiz score.
     public static ShareEmailFragment newInstance(String quizName, double score) {
         Bundle args = new Bundle();
         args.putString(QUIZ_NAME_ARG, quizName);
@@ -41,6 +42,7 @@ public class ShareEmailFragment extends Fragment {
         return fragment;
     }
 
+    // OnCreate gets the quiz name and score from args and set them in the fragment.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class ShareEmailFragment extends Fragment {
         score = getArguments().getDouble(SCORE_ARG);
     }
 
+    // OnCreateView creates the view, sets up the edit texts and buttons.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class ShareEmailFragment extends Fragment {
 
         sendButton = v.findViewById(R.id.email_send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
+            // Calls on the sendEmail method and then closes the fragment.
             @Override
             public void onClick(View v) {
                 sendEmail();
@@ -73,6 +77,7 @@ public class ShareEmailFragment extends Fragment {
 
         editButton = v.findViewById(R.id.edit_email_button);
         editButton.setOnClickListener(new View.OnClickListener() {
+            // Enables editing of the email body.
             @Override
             public void onClick(View v) {
                 editing = true;
@@ -83,10 +88,12 @@ public class ShareEmailFragment extends Fragment {
         return v;
     }
 
+    // Get the default message string for the body.
     private String getMessageText() {
         return String.format(getString(R.string.share_completed_quiz_text),quizName,score);
     }
 
+    // Creates and intent and to send the email, recipients (splits by semicolon), subjext and body.
     private void sendEmail() {
         Intent intent = new  Intent(Intent.ACTION_SEND);
         intent.setType("text/html");

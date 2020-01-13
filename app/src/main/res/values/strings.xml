@@ -47,4 +47,5 @@
     <string name="missing_answer">Question not answered</string>
     <string name="congratulation">Congratulations</string>
     <string name="create_quiz_title">Create Quiz</string>
+    <string name="no_phone_number">Please enter a phone number</string>
 </resources>

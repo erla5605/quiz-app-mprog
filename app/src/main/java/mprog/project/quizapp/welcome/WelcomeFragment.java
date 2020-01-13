@@ -52,15 +52,17 @@ public class WelcomeFragment extends Fragment {
 
     private Button startButton;
 
+    // OnCreate, Gets the photofile
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         File filesDir = getActivity().getFilesDir();
         photoFile = new File(filesDir, photoFileName);
-
     }
 
+    /*  OnCreateView, sets up image view, edit text and buttons.
+        Gets the user name from SharedPreferences if available, set the photo saved if available.*/
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,26 +75,8 @@ public class WelcomeFragment extends Fragment {
         }
 
         addPhotoButton = v.findViewById(R.id.add_photo_button);
+        setUpAddPhotoButton();
 
-        final Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        addPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (takePhoto.resolveActivity(getActivity().getPackageManager()) != null) {
-                    Uri uri = FileProvider.getUriForFile(getActivity(), AUTHORITY_NAME, photoFile);
-                    takePhoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
-                    List<ResolveInfo> resolveInfos = getActivity().getPackageManager().queryIntentActivities(takePhoto, PackageManager.MATCH_DEFAULT_ONLY);
-
-                    for (ResolveInfo info : resolveInfos) {
-                        getActivity().grantUriPermission(info.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    }
-
-                    startActivityForResult(takePhoto, PHOTO_REQUEST_CODE);
-                }
-            }
-        });
         nameEditText = v.findViewById(R.id.enter_name_edit_text);
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String name = preferences.getString(NAME_SAVED, null);
@@ -102,6 +86,7 @@ public class WelcomeFragment extends Fragment {
 
         startButton = v.findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
+            // Checks that user has entered a name and starts the QuizListActivity if it has.
             @Override
             public void onClick(View v) {
                 String name = nameEditText.getText().toString();
@@ -119,6 +104,31 @@ public class WelcomeFragment extends Fragment {
         return v;
     }
 
+    // Sets up the add photo button.
+    private void setUpAddPhotoButton() {
+        final Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            // Starts the intent to take a photo with the correct permissions granted.
+            @Override
+            public void onClick(View v) {
+                if (takePhoto.resolveActivity(getActivity().getPackageManager()) != null) {
+                    Uri uri = FileProvider.getUriForFile(getActivity(), AUTHORITY_NAME, photoFile);
+                    takePhoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+                    List<ResolveInfo> resolveInfos = getActivity().getPackageManager().queryIntentActivities(takePhoto, PackageManager.MATCH_DEFAULT_ONLY);
+
+                    for (ResolveInfo info : resolveInfos) {
+                        getActivity().grantUriPermission(info.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    }
+
+                    startActivityForResult(takePhoto, PHOTO_REQUEST_CODE);
+                }
+            }
+        });
+    }
+
+    // Saves the users name.
     private void saveName(String name) {
         getActivity()
                 .getPreferences(Context.MODE_PRIVATE)
@@ -127,6 +137,7 @@ public class WelcomeFragment extends Fragment {
                 .apply();
     }
 
+    // Handles the result from the intent to take a photo, revokes the permissions.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,6 +150,7 @@ public class WelcomeFragment extends Fragment {
         }
     }
 
+    // Sets the photo taken to the image view.
     private void setPhoto() {
         Bitmap bm = createBitmap();
         RoundedBitmapDrawable rounded = RoundedBitmapDrawableFactory.create(getResources(), bm);
@@ -146,6 +158,7 @@ public class WelcomeFragment extends Fragment {
         photoImageView.setImageDrawable(rounded);
     }
 
+    // Creates the bitmap for the image view.
     private Bitmap createBitmap() {
         int targetWidth = photoImageView.getWidth();
         int targetHeight = photoImageView.getHeight();

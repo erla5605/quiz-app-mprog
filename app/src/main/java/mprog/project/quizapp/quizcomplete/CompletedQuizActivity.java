@@ -15,6 +15,7 @@ public class CompletedQuizActivity extends SingleFragmentActivity {
     private static final String QUIZ_ID_EXTRA = "quiz_id";
     private static final String SCORE_EXTRA = "score";
 
+    // Creates and returns an intent for CompletedQuizActivity, with extras for quiz id and quiz score.
     public static Intent newIntent(Context context, UUID quizId, double score){
         Intent intent = new Intent(context, CompletedQuizActivity.class);
         Bundle extras = new Bundle();
@@ -24,6 +25,7 @@ public class CompletedQuizActivity extends SingleFragmentActivity {
         return intent;
     }
 
+    // Creates and returns CompletedQuizFragment, set quiz id and quiz score extra to the fragment.
     @Override
     protected Fragment createFragment() {
         Bundle extras = getIntent().getExtras();

@@ -17,6 +17,7 @@ public class ShareCompletedQuizDialogFragment extends DialogFragment {
     private static final int EMAIL_OPTION = 0;
     private static final int SMS_OPTION = 1;
 
+    // Listener interface for if user selected to share via email or sms.
     interface ShareCompletedQuizDialogListener {
         void onEmailButtonClicked();
 
@@ -25,6 +26,8 @@ public class ShareCompletedQuizDialogFragment extends DialogFragment {
 
     private ShareCompletedQuizDialogListener listener;
 
+    /*  Creates the dialog. Calls on listener if email or sms selected.
+        Cancels the dialog if user cancels.*/
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class ShareCompletedQuizDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    // Sets the listener to the target fragment which started the dialog fragment.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
