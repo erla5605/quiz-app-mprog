@@ -23,7 +23,6 @@ import mprog.project.quizapp.storage.QuizMapStorage;
 
 public class CompletedQuizFragment extends Fragment implements ShareCompletedQuizDialogFragment.ShareCompletedQuizDialogListener {
 
-    private static final String TAG = "CompletedQuizFragment";
     private static final String QUIZ_ID_ARG = "quiz_id";
     private static final String SCORE_ARG = "score";
     private static final String SHARE_QUIZ_TAG = "share quiz";
