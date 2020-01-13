@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import mprog.project.quizapp.model.Answer;
 import mprog.project.quizapp.model.Question;
@@ -31,11 +32,14 @@ public class QuestionFragment extends Fragment {
     public static final String ANSWER_EXTRA = "answer_boolean";
     public static final String QUESTION_EXTRA = "answered_question";
     public static final String QUESTION_ARG = "question";
+    public static final String CHECKED_ANSWER_ID = "checked_answer";
+
     private static final int TTS_REQUEST_CODE = 200;
 
     private Question question;
     private List<Answer> answers;
     private List<Integer> radioButtonIds = new ArrayList<>();
+    private UUID checkAnswerId;
 
     private TextView questionTextView;
     private ImageButton playVideoButton;
@@ -68,6 +72,10 @@ public class QuestionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_question, container, false);
+
+        if(savedInstanceState != null){
+            checkAnswerId = (UUID) savedInstanceState.getSerializable(CHECKED_ANSWER_ID);
+        }
 
         questionTextView = v.findViewById(R.id.question_text_view);
         questionTextView.setText(question.getQuestionText());
@@ -113,6 +121,9 @@ public class QuestionFragment extends Fragment {
             rButton.setText(answer.getAnswerText());
             rButton.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             answersRadioGroup.addView(rButton);
+            if(answer.getId().equals(checkAnswerId)){
+                rButton.setChecked(true);
+            }
         }
     }
 
@@ -139,6 +150,18 @@ public class QuestionFragment extends Fragment {
         extras.putParcelable(QUESTION_EXTRA, question);
         Intent intent = new Intent().putExtras(extras);
         getActivity().setResult(Activity.RESULT_OK, intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int id = answersRadioGroup.getCheckedRadioButtonId(); // Returns -1 if no button checked.
+        if (id != -1) {
+            UUID checkedAnswerId = answers.get(radioButtonIds.indexOf(id)).getId();
+            outState.putSerializable(CHECKED_ANSWER_ID,checkedAnswerId);
+        } else {
+            outState.putSerializable(CHECKED_ANSWER_ID, null);
+        }
     }
 
     @Override

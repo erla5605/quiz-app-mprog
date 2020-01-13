@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -64,7 +65,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         quizNameTextView = v.findViewById(R.id.completed_quiz_name);
         quizNameTextView.setText(quiz.getName());
         quizDateTextView= v.findViewById(R.id.completed_quiz_date);
-        quizDateTextView.setText(Calendar.getInstance().getTime().toString());
+        quizDateTextView.setText(getDateText());
         quizScoreTextView = v.findViewById(R.id.completed_quiz_score);
         quizScoreTextView.setText(Double.toString(score));
 
@@ -79,6 +80,11 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         });
 
         return v;
+    }
+
+    private String getDateText() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return format.format(Calendar.getInstance().getTime());
     }
 
     @Override

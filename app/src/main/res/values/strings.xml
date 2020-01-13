@@ -10,11 +10,7 @@
     <string name="completed_quiz_score">Score:</string>
     <string name="share">Share</string>
     <string name="share_completed_quiz_text">
-        Hi!\n
-        I just completed the quiz %s!\n
-        My score was %.2f%%\n
-        \n
-        Try to beat my score!
+        Hi!\nI just completed the quiz %s!\nMy score was %.2f%%\n\nTry to beat my score!
     </string>
     <string name="recipient_hint">To:</string>
     <string name="subject_hint">Subject:</string>
@@ -31,7 +27,7 @@
     <string name="enter_name">Enter name:</string>
     <string name="done">Done</string>
     <string name="enter_question">Question:</string>
-    <string name="create_question_title">Question:</string>
+    <string name="create_question_title">Create question</string>
     <string name="set_correct_answer_dialog">Set correct answer</string>
     <string name="correct_answer">Correct answer</string>
     <string name="create_answer">Create answer</string>
@@ -49,4 +45,6 @@
     <string name="add_video">Add video</string>
     <string name="enter_phone_number">Phone number</string>
     <string name="missing_answer">Question not answered</string>
+    <string name="congratulation">Congratulations</string>
+    <string name="create_quiz_title">Create Quiz</string>
 </resources>

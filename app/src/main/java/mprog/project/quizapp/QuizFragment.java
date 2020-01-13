@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import mprog.project.quizapp.model.Question;
@@ -35,7 +34,10 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
     private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
 
+    private static final String QUESTION_ANSWERS_MAP= "question_answer_map";
+
     private RecyclerView questionRecyclerView;
+    private TextView quizTitleTextView;
     private TextView quizDescriptionTextView;
     private Button completeQuizButton;
 
@@ -43,7 +45,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
 
     private Quiz quiz;
 
-    private Map<UUID, Integer> questionAnswers = new HashMap<java.util.UUID, Integer>();
+    private HashMap<UUID, Integer> questionAnswers = new HashMap<>();
 
     public static QuizFragment newInstance(UUID quizId){
         Bundle args = new Bundle();
@@ -65,6 +67,13 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_quiz, container, false);
+
+        if(savedInstanceState != null){
+            questionAnswers = (HashMap<UUID, Integer>) savedInstanceState.getSerializable(QUESTION_ANSWERS_MAP);
+        }
+
+        quizTitleTextView = v.findViewById(R.id.quiz_name_text_view);
+        quizTitleTextView.setText(quiz.getName());
 
         quizDescriptionTextView = v.findViewById(R.id.quiz_description_text_view);
         quizDescriptionTextView.setText(quiz.getDescription());
@@ -105,6 +114,12 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         Intent intent = CompletedQuizActivity.newIntent(getActivity(), quiz.getId(), quizScorePercentage);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(QUESTION_ANSWERS_MAP, questionAnswers);
     }
 
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

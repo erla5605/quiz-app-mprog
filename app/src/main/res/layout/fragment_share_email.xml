@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="4dp">
 
 
     <LinearLayout
@@ -19,12 +20,11 @@
             android:layout_weight="1"/>
 
         <Button
+            style="@style/QuizButton"
             android:id="@+id/email_send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send"/>
-
-
     </LinearLayout>
 
     <EditText
@@ -42,9 +42,12 @@
         android:inputType="textMultiLine"
         android:minLines="10"
         android:gravity="top|start"
+        android:background="@null"
+        android:padding="4dp"
         android:layout_weight="1"/>
 
     <Button
+        style="@style/QuizButton"
         android:id="@+id/edit_email_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

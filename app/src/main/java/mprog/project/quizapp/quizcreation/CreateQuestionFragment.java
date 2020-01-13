@@ -66,6 +66,9 @@ public class CreateQuestionFragment extends Fragment
 
     private boolean newQuestion;
 
+    public CreateQuestionFragment() {
+    }
+
     public CreateQuestionFragment(Question question, CreateQuestionListener listener) {
         this.question = question;
         this.listener = listener;
