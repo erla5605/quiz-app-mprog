@@ -194,7 +194,7 @@ public class CreateQuestionFragment extends Fragment
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    question.deleteAnswer(answer);
+                    question.removeAnswer(answer);
                     answerAdapter.notifyDataSetChanged();
                 }
             });

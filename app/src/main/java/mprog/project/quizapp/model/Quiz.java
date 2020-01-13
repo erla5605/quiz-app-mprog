@@ -40,8 +40,17 @@ public class Quiz extends QuizBaseEntity {
         this.questions = questions;
     }
 
-    public void addQuestion(Question question){
-        questions.add(question);
+    public void addQuestion(Question newQuestion) {
+        if (newQuestion == null) {
+            return;
+        }
+
+        questions.add(newQuestion);
+    }
+
+    public void removeQuestion(Question removeQuestion) {
+        questions.remove(removeQuestion);
+
     }
 
     @Override

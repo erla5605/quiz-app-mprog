@@ -40,20 +40,16 @@ public class Question extends QuizBaseEntity implements Parcelable {
         this.answers = answers;
     }
 
-    public void addAnswer(Answer answer) {
-        if (answer == null) {
+    public void addAnswer(Answer newAnswer) {
+        if (newAnswer == null) {
             return;
         }
 
-        answers.add(answer);
+        answers.add(newAnswer);
     }
 
-    public void deleteAnswer(Answer deleteAnswer) {
-        if (deleteAnswer == null) {
-            return;
-        }
-
-        if (answers.remove(deleteAnswer) && correctAnswer != null && correctAnswer.equals(deleteAnswer)) {
+    public void removeAnswer(Answer removeAnswer) {
+        if (answers.remove(removeAnswer) && correctAnswer != null && correctAnswer.equals(removeAnswer)) {
             correctAnswer = null;
         }
     }

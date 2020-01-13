@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,7 +118,22 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
     }
 
     private boolean isQuizComplete() {
-        return !nameEditText.getText().toString().isEmpty() && !descriptionEditText.getText().toString().isEmpty() && !quiz.getQuestions().isEmpty();
+        return !nameEditText.getText().toString().isEmpty() &&
+                !descriptionEditText.getText().toString().isEmpty() &&
+                isQuestionsComplete();
+    }
+
+    private boolean isQuestionsComplete() {
+        if(quiz.getQuestions().isEmpty()){
+            return false;
+        }
+
+        for(Question q: quiz.getQuestions()){
+            if(!q.hasCorrectAnswer()){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -129,11 +145,21 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Question question;
+        private ImageButton deleteButton;
         private TextView questionText;
         private ImageView questionTypeImageView;
 
         public QuestionHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_new_question_item, parent, false));
+
+            deleteButton = itemView.findViewById(R.id.delete_question_button);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    quiz.removeQuestion(question);
+                    questionAdapter.notifyDataSetChanged();
+                }
+            });
 
             questionText = itemView.findViewById(R.id.new_question_text_view);
             questionTypeImageView = itemView.findViewById(R.id.question_type_image_view);
