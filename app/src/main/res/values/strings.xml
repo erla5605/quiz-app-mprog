@@ -20,14 +20,14 @@
     <string name="edit_button_text">EDIT</string>
     <string name="denied_permission">Need permission to perform this action</string>
     <string name="sms_manager_fail">Could not send sms</string>
-    <string name="create_quiz">Create</string>
+    <string name="create_quiz">Create Quiz</string>
     <string name="name">Name:</string>
     <string name="description">Description:</string>
     <string name="add_description">Add description</string>
     <string name="enter_name">Enter name:</string>
     <string name="done">Done</string>
     <string name="enter_question">Question:</string>
-    <string name="create_question_title">Create question</string>
+    <string name="create_question_title">Create Question</string>
     <string name="set_correct_answer_dialog">Set correct answer</string>
     <string name="correct_answer">Correct answer</string>
     <string name="create_answer">Create answer</string>
@@ -46,6 +46,5 @@
     <string name="enter_phone_number">Phone number</string>
     <string name="missing_answer">Question not answered</string>
     <string name="congratulation">Congratulations</string>
-    <string name="create_quiz_title">Create Quiz</string>
     <string name="no_phone_number">Please enter a phone number</string>
 </resources>

@@ -9,16 +9,16 @@ import java.util.UUID;
 
 public class QuizActivity extends SingleFragmentActivity {
 
-    private static final String TAG = "QuizActivity";
-
     private static final String QUIZ_ID_EXTRA = "quiz id";
 
+    // Creates intent for QuizActivity, with the quiz id as extra.
     public static Intent newIntent(Context context, UUID quizId){
         Intent intent = new Intent(context, QuizActivity.class);
         intent.putExtra(QUIZ_ID_EXTRA, quizId);
         return intent;
     }
 
+    // Creates the QuizFragment with the quiz id.
     @Override
     protected Fragment createFragment() {
         UUID id = (UUID) getIntent().getSerializableExtra(QUIZ_ID_EXTRA);

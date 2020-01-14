@@ -50,6 +50,7 @@ public class QuestionFragment extends Fragment {
 
     private TextToSpeech tts;
 
+    // Creates a new instance of QuestionFragment with question as argument.
     public static QuestionFragment newInstance(Question question) {
         Bundle args = new Bundle();
         args.putParcelable(QUESTION_ARG, question);
@@ -59,15 +60,16 @@ public class QuestionFragment extends Fragment {
         return questionFragment;
     }
 
+    // OnCreate, gets the question from the argument bundle and set the answers list.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         question = getArguments().getParcelable(QUESTION_ARG);
-
         answers = question.getAnswers();
     }
 
+    // OnCreateView, creates the view and sets up the text views, radio group and buttons.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class QuestionFragment extends Fragment {
 
         ttsButton = v.findViewById(R.id.tts_button);
         ttsButton.setOnClickListener(new View.OnClickListener() {
+            // Starts a text to speech intent to read the question text.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
@@ -97,6 +100,7 @@ public class QuestionFragment extends Fragment {
 
         answerQuestionButton = v.findViewById(R.id.answer_question_button);
         answerQuestionButton.setOnClickListener(new View.OnClickListener() {
+            // Answers the question, checks which answer is selected, closes the fragment if an answer is selected.
             @Override
             public void onClick(View v) {
                 int id = answersRadioGroup.getCheckedRadioButtonId(); // Returns -1 if no button checked.
@@ -112,6 +116,7 @@ public class QuestionFragment extends Fragment {
         return v;
     }
 
+    // Sets up the radio buttons for the answers in the radio group.
     private void createRadioButtonsForAnswers(View v) {
         for (Answer answer : answers) {
             RadioButton rButton = new RadioButton(v.getContext());
@@ -127,6 +132,7 @@ public class QuestionFragment extends Fragment {
         }
     }
 
+    // Set up the play video button if the question is of the video type, if not hides the button.
     private void setUpPlayVideoButton() {
         if (question.getType() != Question.QuestionType.VIDEO) {
             playVideoButton.setVisibility(View.INVISIBLE);
@@ -142,6 +148,7 @@ public class QuestionFragment extends Fragment {
         }
     }
 
+    // Sets the result for for the question to be handle by the QuizActivity and QuizFragment.
     private void setQuestionResult(int id) {
         int index = radioButtonIds.indexOf(id);
         boolean answeredCorrectly = answers.get(index).isCorrectAnswer();
@@ -152,18 +159,19 @@ public class QuestionFragment extends Fragment {
         getActivity().setResult(Activity.RESULT_OK, intent);
     }
 
+    // Saves which answer has been selected, to handle rotation.
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         int id = answersRadioGroup.getCheckedRadioButtonId(); // Returns -1 if no button checked.
+        UUID checkedAnswerId = null;
         if (id != -1) {
-            UUID checkedAnswerId = answers.get(radioButtonIds.indexOf(id)).getId();
-            outState.putSerializable(CHECKED_ANSWER_ID,checkedAnswerId);
-        } else {
-            outState.putSerializable(CHECKED_ANSWER_ID, null);
+            checkedAnswerId = answers.get(radioButtonIds.indexOf(id)).getId();
         }
+        outState.putSerializable(CHECKED_ANSWER_ID,checkedAnswerId);
     }
 
+    // Handles the result form the text to speech request.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -177,6 +185,7 @@ public class QuestionFragment extends Fragment {
         }
     }
 
+    // Starts the text to speech.
     private void startTTS() {
         tts = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
             @Override
@@ -188,6 +197,7 @@ public class QuestionFragment extends Fragment {
         });
     }
 
+    // Starts the text to speech, based on which SDK is used.
     private void speak() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tts.speak(question.getQuestionText(), TextToSpeech.QUEUE_FLUSH, null, null);
@@ -196,6 +206,7 @@ public class QuestionFragment extends Fragment {
         }
     }
 
+    // Starts intent to install the text to speech resource files.
     private void installTTSData() {
         Intent intent = new Intent().setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
         startActivity(intent);

@@ -37,7 +37,7 @@ public class CreateQuizActivity extends SingleFragmentActivity implements Create
     @Override
     public void questionCreated(Question question) {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment != null && fragment instanceof CreateQuizFragment) {
+        if (fragment instanceof CreateQuizFragment) {
             ((CreateQuizFragment) fragment).questionCreated(question);
         }
     }

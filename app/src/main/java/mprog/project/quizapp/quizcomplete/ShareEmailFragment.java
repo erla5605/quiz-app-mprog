@@ -93,7 +93,7 @@ public class ShareEmailFragment extends Fragment {
         return String.format(getString(R.string.share_completed_quiz_text),quizName,score);
     }
 
-    // Creates and intent and to send the email, recipients (splits by semicolon), subjext and body.
+    // Creates and intent and to send the email, recipients (splits by semicolon), subject and body.
     private void sendEmail() {
         Intent intent = new  Intent(Intent.ACTION_SEND);
         intent.setType("text/html");

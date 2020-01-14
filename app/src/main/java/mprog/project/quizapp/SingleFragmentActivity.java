@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+// Abstract class for all activities which only shows a single fragment.
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
+    // OnCreate, starts the fragment and with the use of the fragment manager.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,5 +25,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
     }
 
+    // Method to provide the onCreate method with the correct fragment for the activity.
     protected abstract Fragment createFragment();
 }

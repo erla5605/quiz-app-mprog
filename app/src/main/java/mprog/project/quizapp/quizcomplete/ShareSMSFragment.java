@@ -53,7 +53,7 @@ public class ShareSMSFragment extends Fragment {
         return fragment;
     }
 
-    // OnCreate gets the quis name and score from args and set them in the fragment.
+    // OnCreate gets the quiz name and score from args and set them in the fragment.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

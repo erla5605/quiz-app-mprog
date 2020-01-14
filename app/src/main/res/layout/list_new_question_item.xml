@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_delete"
         android:background="@null"
-        android:layout_gravity="center"/>2
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/new_question_text_view"

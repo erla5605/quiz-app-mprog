@@ -12,17 +12,17 @@ import androidx.fragment.app.DialogFragment;
 
 public class CompleteQuizDialogFragment extends DialogFragment {
 
-    // Listener interface if yes button is clicked.
-    public interface CompleteQuizDialogListener{
+    // Listener interface for if yes button is clicked.
+    public interface CompleteQuizDialogListener {
         void onYesButtonClicked();
     }
 
     private CompleteQuizDialogListener listener;
 
 
-/*  Creates the dialog.
-    Positive button calls on listener.
-    Negative button cancels dialog.*/
+    /*  Creates the dialog.
+        Positive button calls on listener.
+        Negative button cancels dialog.*/
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class CompleteQuizDialogFragment extends DialogFragment {
         super.onAttach(context);
         try {
             listener = (CompleteQuizDialogListener) getTargetFragment();
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException(getTargetFragment().getClass().getName()
                     + " must implement CompleteQuizDialogListener!");
         }

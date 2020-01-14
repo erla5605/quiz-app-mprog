@@ -13,7 +13,7 @@ public class QuizMapStorage {
 
     private static QuizMapStorage instance;
 
-    private Map<UUID, Quiz> quizzes = new LinkedHashMap<UUID, Quiz>();
+    private Map<UUID, Quiz> quizzes = new LinkedHashMap<>();
 
     // Get instance of QuizMapStorage. If instance null creates a new.
     public static QuizMapStorage getInstance() {
@@ -39,9 +39,7 @@ public class QuizMapStorage {
 
     // Delete quiz from map.
     public Quiz delete(UUID id){
-        Quiz deletedQuiz = quizzes.remove(id);
-
-        return deletedQuiz;
+        return quizzes.remove(id);
     }
 
     // Get quiz from map by id.
