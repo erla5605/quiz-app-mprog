@@ -42,8 +42,6 @@ public class QuizApi {
         this.context = context;
     }
 
-
-
     public void getQuizzes() {
         final JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, API_URL, null,
                 new Response.Listener<JSONArray>() {

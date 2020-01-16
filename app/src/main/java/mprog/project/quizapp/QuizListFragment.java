@@ -3,6 +3,7 @@ package mprog.project.quizapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class QuizListFragment extends Fragment implements QuizApi.QuizApiRespons
         View v = inflater.inflate(R.layout.fragment_quiz_list, container, false);
 
         quizListRecyclerView = v.findViewById(R.id.quiz_recycler_view);
-        quizListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        quizListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getQuizzesFromApi();
 
@@ -110,6 +111,7 @@ public class QuizListFragment extends Fragment implements QuizApi.QuizApiRespons
     // Handles error on getting the quizzes.
     @Override
     public void errorResponse(String error) {
+        Log.d(TAG, error);
         Toast.makeText(getActivity(), R.string.error_response, Toast.LENGTH_SHORT).show();
         updateAdapter(new ArrayList<Quiz>());
     }
