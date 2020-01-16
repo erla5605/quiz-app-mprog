@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="mprog.project.quizapp">
 
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -10,6 +11,7 @@
 
     <application
         android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
