@@ -1,7 +1,6 @@
 package mprog.project.quizapp.api;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,7 +22,7 @@ import mprog.project.quizapp.model.Quiz;
 
 public class QuizApi {
 
-    private static final String TAG = "QuizAPP";
+    private static final String API_URL = "http://10.0.2.2:8080/quizzes";
 
     public interface QuizApiResponseListener {
         void errorResponse(String error);
@@ -43,7 +42,7 @@ public class QuizApi {
         this.context = context;
     }
 
-    private static final String API_URL = "http://10.0.2.2:8080/quizzes";
+
 
     public void getQuizzes() {
         final JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, API_URL, null,
@@ -79,7 +78,6 @@ public class QuizApi {
 
                 try {
                     Quiz quiz = createQuizFromJson(response);
-                    Log.d(TAG, quiz.toString());
                     listener.quizResponse(quiz);
                 } catch (JSONException e) {
                     listener.errorResponse(e.getMessage());
@@ -157,7 +155,6 @@ public class QuizApi {
         if(quiz == null){
             listener.errorResponse("Quiz was null");
         }
-        Log.d(TAG,"Post");
 
         try {
             JSONObject body = getPostQuizJson(quiz);
@@ -172,7 +169,6 @@ public class QuizApi {
                 body, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d(TAG, "OnResponse Post");
                 listener.postResponse();
             }
         }, new Response.ErrorListener() {
