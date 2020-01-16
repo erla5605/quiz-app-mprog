@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,18 +21,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import mprog.project.quizapp.api.QuizApi;
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.quizcomplete.CompletedQuizActivity;
-import mprog.project.quizapp.storage.QuizMapStorage;
 
-public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener {
+public class QuizFragment extends Fragment implements CompleteQuizDialogFragment.CompleteQuizDialogListener,
+        QuizApi.QuizApiResponseListener {
 
     private static final String QUIZ_ID_ARG = "quiz id";
     private static final String COMPLETE_QUIZ_TAG = "complete quiz";
     private static final int QUESTION_ANSWER_REQUEST_CODE = 200;
     private static final int COMPLETE_QUIZ_REQUEST_CODE = 201;
-    private static final String QUESTION_ANSWERS_MAP= "question_answer_map";
+    private static final String QUESTION_ANSWERS_MAP = "question_answer_map";
 
     private TextView quizTitleTextView;
     private TextView quizDescriptionTextView;
@@ -44,7 +46,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     private HashMap<UUID, Integer> questionAnswers = new HashMap<>();
 
     // Creates a QuizFragment with the quiz id as argument.
-    public static QuizFragment newInstance(UUID quizId){
+    public static QuizFragment newInstance(UUID quizId) {
         Bundle args = new Bundle();
         args.putSerializable(QUIZ_ID_ARG, quizId);
 
@@ -58,7 +60,8 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID id = (UUID) getArguments().getSerializable(QUIZ_ID_ARG);
-        quiz = QuizMapStorage.getInstance().getQuiz(id);
+
+        new QuizApi(this, getActivity()).getQuiz(id);
     }
 
     // OnCreateView, creates the view, sets up text views, recycler view and button.
@@ -67,16 +70,13 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_quiz, container, false);
 
-        if(savedInstanceState != null){
-
+        if (savedInstanceState != null) {
             questionAnswers = (HashMap<UUID, Integer>) savedInstanceState.getSerializable(QUESTION_ANSWERS_MAP);
         }
 
         quizTitleTextView = v.findViewById(R.id.quiz_name_text_view);
-        quizTitleTextView.setText(quiz.getName());
 
         quizDescriptionTextView = v.findViewById(R.id.quiz_description_text_view);
-        quizDescriptionTextView.setText(quiz.getDescription());
 
         questionRecyclerView = v.findViewById(R.id.question_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -84,8 +84,7 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         linearLayoutManager.setReverseLayout(true);
         questionRecyclerView.setLayoutManager(linearLayoutManager);
 
-        questionAdapter = new QuestionAdapter(quiz.getQuestions());
-        questionRecyclerView.setAdapter(questionAdapter);
+
 
         completeQuizButton = v.findViewById(R.id.complete_quiz_button);
         completeQuizButton.setOnClickListener(new View.OnClickListener() {
@@ -93,12 +92,31 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
             @Override
             public void onClick(View v) {
                 CompleteQuizDialogFragment dialog = new CompleteQuizDialogFragment();
-                dialog.setTargetFragment(QuizFragment.this,COMPLETE_QUIZ_REQUEST_CODE);
+                dialog.setTargetFragment(QuizFragment.this, COMPLETE_QUIZ_REQUEST_CODE);
                 dialog.show(getFragmentManager(), COMPLETE_QUIZ_TAG);
             }
         });
 
         return v;
+    }
+
+
+    // Sets up the texts of the text views.
+    private void setUpView() {
+        quizTitleTextView.setText(quiz.getName());
+        quizDescriptionTextView.setText(quiz.getDescription());
+        setUpAdapter();
+    }
+
+    // Sets up the adapter for the recycler view.
+    private void setUpAdapter() {
+        if(questionAdapter == null){
+            questionAdapter = new QuestionAdapter(quiz.getQuestions());
+            questionRecyclerView.setAdapter(questionAdapter);
+        } else {
+            questionAdapter.setQuestions(quiz.getQuestions());
+            questionAdapter.notifyDataSetChanged();
+        }
     }
 
     // Calculates the total score of the quiz and converts it to a percentage.
@@ -107,14 +125,14 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         for (int i : questionAnswers.values()) {
             sum += i;
         }
-        return (double)sum / quiz.getQuestions().size() * 100;
+        return (double) sum / quiz.getQuestions().size() * 100;
     }
 
     // Starts the complete CompletedQuizActivity if the user selects yes on the complete quiz dialog.
     @Override
     public void onYesButtonClicked() {
         double quizScorePercentage = getQuizScore();
-        Intent intent = CompletedQuizActivity.newIntent(getActivity(), quiz.getId(), quizScorePercentage);
+        Intent intent = CompletedQuizActivity.newIntent(getActivity(), quiz.getName(), quizScorePercentage);
         startActivity(intent);
         getActivity().finish();
     }
@@ -143,6 +161,32 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         Question answeredQuestion = extras.getParcelable(QuestionFragment.QUESTION_EXTRA);
         questionAnswers.put(answeredQuestion.getId(), answeredCorrectly ? 1 : 0);
         questionAdapter.notifyDataSetChanged();
+    }
+
+    // Handles error responses on getting the quiz.
+    @Override
+    public void errorResponse(String error) {
+        Toast.makeText(getActivity(), getString(R.string.error_load_quiz), Toast.LENGTH_SHORT).show();
+        getActivity().onBackPressed();
+    }
+
+    // Not used
+    @Override
+    public void quizListResponse(List<Quiz> quizzes) {
+
+    }
+
+    // Handles the response of getting the quiz.
+    @Override
+    public void quizResponse(Quiz quiz) {
+        this.quiz = quiz;
+        setUpView();
+    }
+
+    // not used
+    @Override
+    public void postResponse() {
+
     }
 
     // View holder for the recycler view.
@@ -207,6 +251,11 @@ public class QuizFragment extends Fragment implements CompleteQuizDialogFragment
         @Override
         public int getItemCount() {
             return questions.size();
+        }
+
+        //Sets the questions
+        public void setQuestions(List<Question> questions){
+            this.questions = questions;
         }
     }
 }

@@ -18,14 +18,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import mprog.project.quizapp.api.QuizApi;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.quizcreation.CreateQuizActivity;
 import mprog.project.quizapp.quizcreation.CreateQuizFragment;
-import mprog.project.quizapp.storage.QuizMapStorage;
 
-public class QuizListFragment extends Fragment {
+public class QuizListFragment extends Fragment implements QuizApi.QuizApiResponseListener {
+
+    private static final String TAG = "QuizAPP";
 
     private static final int CREATE_QUIZ_REQUEST_CODE = 200;
 
@@ -48,10 +51,26 @@ public class QuizListFragment extends Fragment {
         quizListRecyclerView = v.findViewById(R.id.quiz_recycler_view);
         quizListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        quizAdapter = new QuizAdapter(QuizMapStorage.getInstance().getQuizzes());
-        quizListRecyclerView.setAdapter(quizAdapter);
+        getQuizzesFromApi();
 
         return v;
+    }
+
+    // Get quizzes from api
+    private void getQuizzesFromApi(){
+        new QuizApi(this, getActivity()).getQuizzes();
+    }
+
+
+    // Updates the adapter for the recycler view.
+    private void updateAdapter(List<Quiz> list) {
+        if(quizAdapter == null){
+            quizAdapter = new QuizAdapter(list);
+            quizListRecyclerView.setAdapter(quizAdapter);
+        } else {
+            quizAdapter.setQuizzes(list);
+            quizAdapter.notifyDataSetChanged();
+        }
     }
 
     // Creates the menu.
@@ -81,12 +100,36 @@ public class QuizListFragment extends Fragment {
 
         if(requestCode == CREATE_QUIZ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             if(data.getBooleanExtra(CreateQuizFragment.QUIZ_RESULT_EXTRA, false)){
-                quizAdapter.setQuizzes(QuizMapStorage.getInstance().getQuizzes());
-                quizAdapter.notifyDataSetChanged();
+                getQuizzesFromApi();
             } else {
                 Toast.makeText(getActivity(), R.string.failed_quiz_creation, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // Handles error on getting the quizzes.
+    @Override
+    public void errorResponse(String error) {
+        Toast.makeText(getActivity(), R.string.error_response, Toast.LENGTH_SHORT).show();
+        updateAdapter(new ArrayList<Quiz>());
+    }
+
+    // Handles the response of the quizzes, set them to the recycler view.
+    @Override
+    public void quizListResponse(List<Quiz> quizzes) {
+        updateAdapter(quizzes);
+    }
+
+    // not used.
+    @Override
+    public void quizResponse(Quiz quiz) {
+
+    }
+
+    // not used.
+    @Override
+    public void postResponse() {
+
     }
 
     // View holder for the recycler view.

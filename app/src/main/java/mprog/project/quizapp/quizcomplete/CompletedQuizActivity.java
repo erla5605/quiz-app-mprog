@@ -6,32 +6,30 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.UUID;
-
 import mprog.project.quizapp.SingleFragmentActivity;
 
 public class CompletedQuizActivity extends SingleFragmentActivity {
 
-    private static final String QUIZ_ID_EXTRA = "quiz_id";
+    private static final String QUIZ_NAME_EXTRA = "quiz_id";
     private static final String SCORE_EXTRA = "score";
 
-    // Creates and returns an intent for CompletedQuizActivity, with extras for quiz id and quiz score.
-    public static Intent newIntent(Context context, UUID quizId, double score){
+    // Creates and returns an intent for CompletedQuizActivity, with extras for quiz name and quiz score.
+    public static Intent newIntent(Context context, String quizName, double score){
         Intent intent = new Intent(context, CompletedQuizActivity.class);
         Bundle extras = new Bundle();
-        extras.putSerializable(QUIZ_ID_EXTRA, quizId);
+        extras.putString(QUIZ_NAME_EXTRA, quizName);
         extras.putDouble(SCORE_EXTRA, score);
         intent.putExtras(extras);
         return intent;
     }
 
-    // Creates and returns CompletedQuizFragment, set quiz id and quiz score extra to the fragment.
+    // Creates and returns CompletedQuizFragment, set quiz name and quiz score extra to the fragment.
     @Override
     protected Fragment createFragment() {
         Bundle extras = getIntent().getExtras();
-        UUID quizId = (UUID) extras.getSerializable(QUIZ_ID_EXTRA);
+        String quizName = extras.getString(QUIZ_NAME_EXTRA);
         double score = extras.getDouble(SCORE_EXTRA);
 
-        return CompletedQuizFragment.newInstance(quizId, score);
+        return CompletedQuizFragment.newInstance(quizName, score);
     }
 }

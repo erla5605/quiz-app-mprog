@@ -27,11 +27,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import mprog.project.quizapp.R;
+import mprog.project.quizapp.api.QuizApi;
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;
-import mprog.project.quizapp.storage.QuizMapStorage;
 
-public class CreateQuizFragment extends Fragment implements CreateQuestionFragment.CreateQuestionListener {
+public class CreateQuizFragment extends Fragment implements CreateQuestionFragment.CreateQuestionListener,
+        QuizApi.QuizApiResponseListener {
 
     public static final String QUIZ_RESULT_EXTRA = "result quiz id";
     private static final String QUESTIONS_KEY = "questions";
@@ -110,10 +111,6 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
             case R.id.done_quiz_item:
                 if (isQuizComplete()) {
                     createQuiz();
-                    Intent intent = new Intent();
-                    intent.putExtra(QUIZ_RESULT_EXTRA, true);
-                    getActivity().setResult(Activity.RESULT_OK, intent);
-                    getActivity().finish();
                 } else {
                     Toast.makeText(getActivity(), R.string.incomplete_quiz_text, Toast.LENGTH_SHORT).show();
                 }
@@ -127,7 +124,9 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
     private void createQuiz() {
         quiz.setName(nameEditText.getText().toString());
         quiz.setDescription(descriptionEditText.getText().toString());
-        QuizMapStorage.getInstance().add(quiz);
+
+        new QuizApi(this, getActivity()).postQuiz(quiz);
+        // QuizMapStorage.getInstance().add(quiz);
     }
 
     // Checks if everything necessary for the quiz has been set for the quiz to be complete.
@@ -166,6 +165,32 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
     }
 
+    @Override
+    public void errorResponse(String error) {
+        Toast.makeText(getActivity(), "Could not post quiz", Toast.LENGTH_SHORT).show();
+    }
+
+    // Not used
+    @Override
+    public void quizListResponse(List<Quiz> quizzes) {
+
+    }
+
+    // Not used
+    @Override
+    public void quizResponse(Quiz quiz) {
+
+    }
+
+    // Handles if post of quiz was a success.
+    @Override
+    public void postResponse() {
+        Intent intent = new Intent();
+        intent.putExtra(QUIZ_RESULT_EXTRA, true);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        getActivity().finish();
+    }
+
     // View holder for the recycler view.
     private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -201,6 +226,7 @@ public class CreateQuizFragment extends Fragment implements CreateQuestionFragme
 
             questionTypeImageView.setImageDrawable(getDrawable(question));
         }
+
         // Gets the image drawable based on question type.
         private Drawable getDrawable(Question question) {
             return question.getType() == Question.QuestionType.VIDEO ?

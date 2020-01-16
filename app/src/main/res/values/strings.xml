@@ -47,4 +47,6 @@
     <string name="missing_answer">Question not answered</string>
     <string name="congratulation">Congratulations</string>
     <string name="no_phone_number">Please enter a phone number</string>
+    <string name="error_response">Could not load</string>
+    <string name="error_load_quiz">Could not load quiz</string>
 </resources>

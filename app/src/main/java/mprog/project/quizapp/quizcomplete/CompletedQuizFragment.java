@@ -14,16 +14,13 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.UUID;
 
 import mprog.project.quizapp.R;
-import mprog.project.quizapp.model.Quiz;
-import mprog.project.quizapp.storage.QuizMapStorage;
 
 
 public class CompletedQuizFragment extends Fragment implements ShareCompletedQuizDialogFragment.ShareCompletedQuizDialogListener {
 
-    private static final String QUIZ_ID_ARG = "quiz_id";
+    private static final String QUIZ_NAME_ARG = "quiz_name";
     private static final String SCORE_ARG = "score";
     private static final String SHARE_QUIZ_TAG = "share quiz";
     private static final int SHARE_QUIZ_REQUEST_CODE = 200;
@@ -34,14 +31,14 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
 
     private Button shareButton;
 
-    private Quiz quiz;
+    private String quizName;
 
     private double score;
 
-    // Creates and returns a CompletedQuizFragment instance with arguments for quiz id and quiz score.
-    public static CompletedQuizFragment newInstance(UUID quizId, double score) {
+    // Creates and returns a CompletedQuizFragment instance with arguments for quiz name and quiz score.
+    public static CompletedQuizFragment newInstance(String name, double score) {
         Bundle args = new Bundle();
-        args.putSerializable(QUIZ_ID_ARG, quizId);
+        args.putString(QUIZ_NAME_ARG, name);
         args.putDouble(SCORE_ARG, score);
 
         CompletedQuizFragment fragment = new CompletedQuizFragment();
@@ -49,13 +46,13 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         return fragment;
     }
 
-    // OnCreate gets the quiz that had been completed with the id from the arguments.
+    // OnCreate gets the quiz that had been completed with the name from the arguments.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         score = getArguments().getDouble(SCORE_ARG);
-        quiz = QuizMapStorage.getInstance().getQuiz((UUID) getArguments().getSerializable(QUIZ_ID_ARG));
+        quizName = getArguments().getString(QUIZ_NAME_ARG);
     }
 
     // OnCreateView creates the view, sets up the text views with the text from the quiz and share button.
@@ -65,7 +62,7 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
         View v = inflater.inflate(R.layout.fragment_completed_quiz, container, false);
 
         quizNameTextView = v.findViewById(R.id.completed_quiz_name);
-        quizNameTextView.setText(quiz.getName());
+        quizNameTextView.setText(quizName);
         quizDateTextView= v.findViewById(R.id.completed_quiz_date);
         quizDateTextView.setText(getDateText());
         quizScoreTextView = v.findViewById(R.id.completed_quiz_score);
@@ -94,14 +91,14 @@ public class CompletedQuizFragment extends Fragment implements ShareCompletedQui
     // Creates a new instance of ShareEmailFragment
     @Override
     public void onEmailButtonClicked() {
-        ShareEmailFragment fragment = ShareEmailFragment.newInstance(quiz.getName(), score);
+        ShareEmailFragment fragment = ShareEmailFragment.newInstance(quizName, score);
         swapFragment(fragment);
     }
 
     // Creates a new instance of ShareSmsFragment
     @Override
     public void onSMSButtonClicked() {
-        ShareSMSFragment fragment = ShareSMSFragment.newInstance(quiz.getName(), score);
+        ShareSMSFragment fragment = ShareSMSFragment.newInstance(quizName, score);
         swapFragment(fragment);
     }
 
