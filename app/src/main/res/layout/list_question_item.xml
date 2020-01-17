@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginBottom="4dp">
 
     <TextView
         android:id="@+id/item_question_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <RadioButton
         android:id="@+id/item_question_radio_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="false"/>
+        android:enabled="false"
+        android:layout_gravity="center"/>
 
 </LinearLayout>
