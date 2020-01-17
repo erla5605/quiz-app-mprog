@@ -22,8 +22,7 @@ import mprog.project.quizapp.model.Quiz;
 
 public class QuizApi {
 
-    private static final String API_URL = "http://10.0.2.2:8080/quizzes";
-
+    // Interface for the listener to the response of the QuizApi.
     public interface QuizApiResponseListener {
         void errorResponse(String error);
 
@@ -34,17 +33,23 @@ public class QuizApi {
         void postResponse();
     }
 
+    private static final String API_URL = "http://10.0.2.2:8080/quizzes";
+
     private QuizApiResponseListener listener;
     private Context context;
 
+    // Constructor for the QuizApi takes a listener and a context.
     public QuizApi(QuizApiResponseListener listener, Context context) {
         this.listener = listener;
         this.context = context;
     }
 
+    // Makes a request for all the quizzes.
     public void getQuizzes() {
         final JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, API_URL, null,
                 new Response.Listener<JSONArray>() {
+                    // Handles the response, creates quizzes from the JSONArray response.
+                    // Passes them to the listener.
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
@@ -58,6 +63,7 @@ public class QuizApi {
                         }
                     }
                 }, new Response.ErrorListener() {
+            // Handles if response returns an error, passes the error message to the listener.
             @Override
             public void onErrorResponse(VolleyError error) {
                 listener.errorResponse(error.getMessage());
@@ -67,10 +73,12 @@ public class QuizApi {
         RequestQueueProvider.getInstance(context).addToRequestQueue(getRequest);
     }
 
+    // Makes a request for the quiz with that id.
     public void getQuiz(UUID id) {
         String url = API_URL + "/" + id;
 
         final JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            // Creates a quiz from the JSONObject response, and passes it to the listener.
             @Override
             public void onResponse(JSONObject response) {
 
@@ -82,6 +90,7 @@ public class QuizApi {
                 }
             }
         }, new Response.ErrorListener() {
+            // Handles if response returns an error, passes the error message to the listener.
             @Override
             public void onErrorResponse(VolleyError error) {
                 listener.errorResponse(error.getMessage());
@@ -90,6 +99,7 @@ public class QuizApi {
         RequestQueueProvider.getInstance(context).addToRequestQueue(getRequest);
     }
 
+    // Creates a quiz from a JSON object.
     private Quiz createQuizFromJson(JSONObject quizJson) throws JSONException {
         String id = quizJson.getString("id");
         String name = quizJson.getString("name");
@@ -104,53 +114,61 @@ public class QuizApi {
         return quiz;
     }
 
+    // Creates a list of questions from a JSONArray in a JSONObject that represent a quiz.
     private ArrayList<Question> getQuestions(JSONObject quiz) throws JSONException {
         ArrayList<Question> questions = new ArrayList<>();
         JSONArray questionsJson = quiz.getJSONArray("questions");
-        for (int x = 0; x < questionsJson.length(); x++) {
-            JSONObject questionJson = questionsJson.getJSONObject(x);
-            String questionId = questionJson.getString("id");
-            String questionText = questionJson.getString("questionText");
-            List<Answer> answers = getAnswers(questionJson);
-            String type = questionJson.getString("type");
-            String video = questionJson.getString("video");
+        if (questionsJson != null) {
+            for (int i = 0; i < questionsJson.length(); i++) {
+                JSONObject questionJson = questionsJson.getJSONObject(i);
+                String questionId = questionJson.getString("id");
+                String questionText = questionJson.getString("questionText");
+                List<Answer> answers = getAnswers(questionJson);
+                String type = questionJson.getString("type");
+                String video = questionJson.getString("video");
 
-            Question question = new Question();
-            question.setId(UUID.fromString(questionId));
-            question.setQuestionText(questionText);
-            question.setAnswers(answers);
-            question.setType(Question.QuestionType.valueOf(type));
-            question.setVideo(video);
+                Question question = new Question();
+                question.setId(UUID.fromString(questionId));
+                question.setQuestionText(questionText);
+                question.setAnswers(answers);
+                question.setType(Question.QuestionType.valueOf(type));
+                question.setVideo(video);
 
-            questions.add(question);
+                questions.add(question);
+            }
         }
 
         return questions;
     }
 
+    // Creates a list of answers from a JSONArray in a JSONObject that represent a question.
     private List<Answer> getAnswers(JSONObject question) throws JSONException {
         List<Answer> answers = new ArrayList<>();
 
         JSONArray answersJson = question.getJSONArray("answers");
-        for (int y = 0; y < answersJson.length(); y++) {
-            JSONObject answerJson = answersJson.getJSONObject(y);
 
-            String answerId = answerJson.getString("id");
-            String answerText = answerJson.getString("answerText");
-            boolean correctAnswer = answerJson.getBoolean("correctAnswer");
+        if (answersJson != null) {
+            for (int i = 0; i < answersJson.length(); i++) {
+                JSONObject answerJson = answersJson.getJSONObject(i);
 
-            Answer answer = new Answer();
-            answer.setId(UUID.fromString(answerId));
-            answer.setAnswerText(answerText);
-            answer.setCorrectAnswer(correctAnswer);
+                String answerId = answerJson.getString("id");
+                String answerText = answerJson.getString("answerText");
+                boolean correctAnswer = answerJson.getBoolean("correctAnswer");
 
-            answers.add(answer);
+                Answer answer = new Answer();
+                answer.setId(UUID.fromString(answerId));
+                answer.setAnswerText(answerText);
+                answer.setCorrectAnswer(correctAnswer);
+
+                answers.add(answer);
+            }
         }
         return answers;
     }
 
+    // Makes a a JSONObject of a quiz and then makes a request to post that quiz.
     public void postQuiz(Quiz quiz) {
-        if(quiz == null){
+        if (quiz == null) {
             listener.errorResponse("Quiz was null");
         }
 
@@ -162,14 +180,17 @@ public class QuizApi {
         }
     }
 
+    // Makes a request to post the quiz that was created.
     private void makePostRequest(JSONObject body) {
         final JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, API_URL,
                 body, new Response.Listener<JSONObject>() {
+            // Handles the response by calling on the listener.
             @Override
             public void onResponse(JSONObject response) {
                 listener.postResponse();
             }
         }, new Response.ErrorListener() {
+            // Handles if response returns an error, passes the error message to the listener.
             @Override
             public void onErrorResponse(VolleyError error) {
                 listener.errorResponse(error.getMessage());
@@ -179,18 +200,20 @@ public class QuizApi {
         RequestQueueProvider.getInstance(context).addToRequestQueue(postRequest);
     }
 
+    // Creates JSONObject from a quiz.
     private JSONObject getPostQuizJson(Quiz quiz) throws JSONException {
-            JSONObject quizJson = new JSONObject();
-            quizJson.put("name", quiz.getName());
-            quizJson.put("description", quiz.getDescription());
-            quizJson.put("questions", getQuestionsJson(quiz));
-            return quizJson;
+        JSONObject quizJson = new JSONObject();
+        quizJson.put("name", quiz.getName());
+        quizJson.put("description", quiz.getDescription());
+        quizJson.put("questions", getQuestionsJson(quiz));
+        return quizJson;
     }
 
+    // Creates JSONArray of questions from a quiz.
     private JSONArray getQuestionsJson(Quiz quiz) throws JSONException {
         JSONArray questionsJson = new JSONArray();
 
-        for(Question q : quiz.getQuestions()){
+        for (Question q : quiz.getQuestions()) {
             JSONObject questionJson = new JSONObject();
 
             questionJson.put("questionText", q.getQuestionText());
@@ -203,10 +226,11 @@ public class QuizApi {
         return questionsJson;
     }
 
+    // Creates JSONArray of answers from a question.
     private JSONArray getAnswersJson(Question question) throws JSONException {
         JSONArray answersJson = new JSONArray();
 
-        for(Answer answer : question.getAnswers()){
+        for (Answer answer : question.getAnswers()) {
             JSONObject answerJson = new JSONObject();
             answerJson.put("answerText", answer.getAnswerText());
             answerJson.put("correctAnswer", answer.isCorrectAnswer());

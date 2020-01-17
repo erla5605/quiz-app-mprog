@@ -12,11 +12,13 @@ public class RequestQueueProvider {
     private RequestQueue requestQueue;
     private static Context context;
 
+    // Constructor for the RequestQueueProvider.
     private RequestQueueProvider(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
     }
 
+    // Provides and instance of the RequestQueueProvider.
     public static synchronized RequestQueueProvider getInstance(Context context){
         if(instance == null){
             instance = new RequestQueueProvider(context);
@@ -25,6 +27,7 @@ public class RequestQueueProvider {
         return instance;
     }
 
+    // Gets the request queue, creates it if not yet created.
     private RequestQueue getRequestQueue() {
         if(requestQueue == null){
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -33,8 +36,9 @@ public class RequestQueueProvider {
         return requestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
-        getRequestQueue().add(req);
+    // Adds a request to the request queue.
+    public <T> void addToRequestQueue(Request<T> request) {
+        getRequestQueue().add(request);
     }
 
 }
