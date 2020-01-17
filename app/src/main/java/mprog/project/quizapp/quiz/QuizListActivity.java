@@ -1,6 +1,8 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quiz;
 
 import androidx.fragment.app.Fragment;
+
+import mprog.project.quizapp.SingleFragmentActivity;
 
 public class QuizListActivity extends SingleFragmentActivity {
 

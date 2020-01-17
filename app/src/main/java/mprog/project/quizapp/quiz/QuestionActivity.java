@@ -1,10 +1,11 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quiz;
 
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 
+import mprog.project.quizapp.SingleFragmentActivity;
 import mprog.project.quizapp.model.Question;
 
 public class QuestionActivity extends SingleFragmentActivity {

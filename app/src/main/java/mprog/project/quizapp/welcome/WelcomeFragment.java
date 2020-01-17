@@ -32,8 +32,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.util.List;
 
-import mprog.project.quizapp.QuizListActivity;
 import mprog.project.quizapp.R;
+import mprog.project.quizapp.quiz.QuizListActivity;
 
 public class WelcomeFragment extends Fragment {
 

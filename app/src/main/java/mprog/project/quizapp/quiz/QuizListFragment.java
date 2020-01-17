@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quiz;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import mprog.project.quizapp.R;
 import mprog.project.quizapp.api.QuizApi;
 import mprog.project.quizapp.model.Quiz;
 import mprog.project.quizapp.quizcreation.CreateQuizActivity;

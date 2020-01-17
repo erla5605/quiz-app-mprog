@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quiz;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import mprog.project.quizapp.R;
 import mprog.project.quizapp.api.QuizApi;
 import mprog.project.quizapp.model.Question;
 import mprog.project.quizapp.model.Quiz;

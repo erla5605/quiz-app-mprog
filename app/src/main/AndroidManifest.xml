@@ -28,10 +28,10 @@
         </activity>
         <activity android:name=".quizcomplete.CompletedQuizActivity" />
         <activity android:name=".quizcreation.CreateQuizActivity" />
-        <activity android:name=".QuizListActivity">
+        <activity android:name=".quiz.QuizListActivity">
         </activity>
-        <activity android:name=".QuizActivity" />
-        <activity android:name=".QuestionActivity" />
+        <activity android:name=".quiz.QuizActivity" />
+        <activity android:name=".quiz.QuestionActivity" />
         <provider
             android:authorities="mprog.project.quizapp.fileprovider"
             android:name="androidx.core.content.FileProvider"

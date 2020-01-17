@@ -1,4 +1,4 @@
-package mprog.project.quizapp;
+package mprog.project.quizapp.quiz;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 import java.util.UUID;
+
+import mprog.project.quizapp.SingleFragmentActivity;
 
 public class QuizActivity extends SingleFragmentActivity {
 
