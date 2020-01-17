@@ -3,7 +3,6 @@ package mprog.project.quizapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,8 +27,6 @@ import mprog.project.quizapp.quizcreation.CreateQuizActivity;
 import mprog.project.quizapp.quizcreation.CreateQuizFragment;
 
 public class QuizListFragment extends Fragment implements QuizApi.QuizApiResponseListener {
-
-    private static final String TAG = "QuizAPP";
 
     private static final int CREATE_QUIZ_REQUEST_CODE = 200;
 
@@ -111,7 +108,6 @@ public class QuizListFragment extends Fragment implements QuizApi.QuizApiRespons
     // Handles error on getting the quizzes.
     @Override
     public void errorResponse(String error) {
-        Log.d(TAG, error);
         Toast.makeText(getActivity(), R.string.error_response, Toast.LENGTH_SHORT).show();
         updateAdapter(new ArrayList<Quiz>());
     }
