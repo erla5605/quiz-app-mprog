@@ -16,7 +16,6 @@ public class Question extends QuizBaseEntity implements Parcelable {
 
     private String questionText;
     private List<Answer> answers = new ArrayList<>();
-    private Answer correctAnswer;
     private QuestionType type;
     private String video;
 
@@ -69,27 +68,34 @@ public class Question extends QuizBaseEntity implements Parcelable {
 
     // Remove answer from question
     public void removeAnswer(Answer removeAnswer) {
-        if (answers.remove(removeAnswer) && correctAnswer != null && correctAnswer.equals(removeAnswer)) {
-            correctAnswer = null;
-        }
+        answers.remove(removeAnswer);
     }
 
-    /* Sets the position of the correct answer, and set correct answer in Answer.
-       Clears previous correct answer.*/
-    public void setPositionOfCorrectAnswer(int positionOfCorrectAnswer) {
-        if (positionOfCorrectAnswer > answers.size())
+    public Answer getCorrectAnswer() {
+        for(Answer answer : answers){
+            if(answer.isCorrectAnswer()){
+                return answer;
+            }
+        }
+
+        return null;
+    }
+
+    /* Sets the correct answer by position, and set correct answer in Answer.
+           Clears previous correct answer.*/
+    public void setCorrectAnswerByPosition(int positionOfCorrectAnswer) {
+        if (positionOfCorrectAnswer >= answers.size())
             throw new IllegalArgumentException("Position of Correct Answer out of bounds");
 
-        if (this.correctAnswer != null) {
-            this.correctAnswer.setCorrectAnswer(false);
+        if (hasCorrectAnswer()) {
+            getCorrectAnswer().setCorrectAnswer(false);
         }
-        this.correctAnswer = answers.get(positionOfCorrectAnswer);
-        this.correctAnswer.setCorrectAnswer(true);
+        answers.get(positionOfCorrectAnswer).setCorrectAnswer(true);
     }
 
     // Check if question has a correct answer.
     public boolean hasCorrectAnswer() {
-        return correctAnswer != null;
+        return getCorrectAnswer() != null;
     }
 
     /* Implementation of the Parcelable interface */
@@ -97,7 +103,6 @@ public class Question extends QuizBaseEntity implements Parcelable {
         super(in);
         questionText = in.readString();
         answers = in.createTypedArrayList(Answer.CREATOR);
-        correctAnswer = in.readParcelable(Answer.class.getClassLoader());
         type = QuestionType.values()[in.readInt()];
         video = in.readString();
     }
@@ -124,7 +129,6 @@ public class Question extends QuizBaseEntity implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeString(questionText);
         dest.writeTypedList(answers);
-        dest.writeParcelable(correctAnswer, flags);
         dest.writeInt(type.ordinal());
         dest.writeString(video);
     }

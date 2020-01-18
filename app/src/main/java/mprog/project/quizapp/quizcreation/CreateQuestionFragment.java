@@ -178,7 +178,7 @@ public class CreateQuestionFragment extends Fragment
     // Sets the correct answer in the question.
     @Override
     public void setCorrectAnswer(int answerPosition) {
-        question.setPositionOfCorrectAnswer(answerPosition);
+        question.setCorrectAnswerByPosition(answerPosition);
         answerAdapter.notifyDataSetChanged();
     }
 
